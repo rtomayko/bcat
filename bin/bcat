@@ -1,48 +1,14 @@
 #!/usr/bin/env ruby
 # Usage: bcat [<file>]...
 # Concatenate <file>s, or standard input, to browser.
-require 'rack'
-require 'bcat/kidgloves'
+require 'bcat'
 
-class PipeResponse
-  include Rack::Utils
-
-  def call(env)
-    [200, {"Content-Type" => "text/html;charset=utf-8"}, self]
-  end
-
-  def each
-    yield "\n" * 1000
-    yield "<!DOCTYPE html>\n"
-    yield "<html><body><pre>"
-
-    begin
-      while buf = $stdin.readpartial(4096)
-        output = escape_html(buf)
-        output = output.gsub(/\n/, "<br>")
-        yield "<script>document.write('#{output}');</script>"
-      end
-    rescue EOFError, Interrupt
-    end
-
-    yield "</pre></body></html>"
-    exit! 0
-  end
-end
-
-host = '127.0.0.1'
-port = 8091
-app =
-  Rack::Builder.new do
-    use Rack::Chunked
-    run PipeResponse.new
-  end
-
-Rack::Handler::KidGloves.run app, :Host => host, :Port => port do |sock|
+bcat = Bcat.new
+bcat.serve! do |sock|
   fork do
     sock.close
     $stdin.close
     $stdout.close
-    exec "open http://localhost:#{port}/#{File.basename(Dir.pwd)} >/dev/null"
+    exec "open http://#{bcat[:Host]}:#{bcat[:Port]}/#{File.basename(Dir.pwd)}"
   end
 end
