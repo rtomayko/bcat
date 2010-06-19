@@ -18,7 +18,7 @@ options = {
 ARGV.options do |argv|
   argv.on('-h', '--html')    { options[:html] = true }
   argv.on('-t', '--title=v') { |text| options[:title] = text }
-  argv.on_tail('--help') { exec "grep ^#/ #{__FILE__} | cut -c4-" }
+  argv.on_tail('--help') { exec "grep ^#/ <#{__FILE__} | cut -c4-" }
   argv.parse!
 end
 

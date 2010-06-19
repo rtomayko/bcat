@@ -2,7 +2,7 @@ require 'rack'
 require 'bcat/kidgloves'
 
 class Bcat
-  VERSION = '0.0.0'
+  VERSION = '0.0.1'
   include Rack::Utils
 
   def initialize(fds=[$stdin], config={})
