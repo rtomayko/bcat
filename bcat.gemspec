@@ -13,12 +13,12 @@ Gem::Specification.new do |s|
 
   # = MANIFEST =
   s.files = %w[
-    README
     Rakefile
+    bcat.gemspec
     bin/bcat
     lib/bcat.rb
     lib/bcat/kidgloves.rb
-    bcat.gemspec
+    man/bcat.1.ronn
   ]
   # = MANIFEST =
 
