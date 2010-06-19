@@ -3,12 +3,22 @@
 # Concatenate <file>s, or standard input, to browser.
 require 'bcat'
 
+fds =
+  ARGV.map do |file|
+    if file == '-'
+      $stdin
+    else
+      File.open(file, 'rb')
+    end
+  end
+fds = [$stdin] if fds.empty?
+
 pid = nil
-bcat = Bcat.new($stdin)
+bcat = Bcat.new(fds)
 bcat.serve! do |sock|
   pid =
     fork do
-      [sock, $stdin, $stdout].each { |fd| fd.close }
+      (fds + [sock, $stdin, $stdout]).uniq.each { |fd| fd.close }
       exec "open http://#{bcat[:Host]}:#{bcat[:Port]}/#{File.basename(Dir.pwd)}"
     end
 end

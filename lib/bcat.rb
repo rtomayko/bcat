@@ -4,8 +4,8 @@ require 'bcat/kidgloves'
 class Bcat
   include Rack::Utils
 
-  def initialize(fd=$stdin, config={})
-    @fd = fd
+  def initialize(fds=[$stdin], config={})
+    @fds = fds
     @config = {:Host => '127.0.0.1', :Port => 8091}.merge(config)
   end
 
@@ -17,21 +17,35 @@ class Bcat
     [200, {"Content-Type" => "text/html;charset=utf-8"}, self]
   end
 
+  def head
+    ["<html>",
+     "<head><title>bcat</title></head>",
+     "<body><pre>"].join
+  end
+
+  def foot
+    "</pre></body></html>"
+  end
+
   def each
     yield "\n" * 1000
     yield "<!DOCTYPE html>\n"
-    yield "<html><body><pre>"
+    yield head
 
     begin
-      while buf = @fd.readpartial(4096)
-        output = escape_html(buf)
-        output = output.gsub(/\n/, "<br>")
-        yield "<script>document.write('#{output}');</script>"
+      @fds.each do |fd|
+        begin
+          while buf = fd.readpartial(4096)
+            output = escape_html(buf)
+            output = output.gsub(/\n/, "<br>")
+            yield "<script>document.write('#{output}');</script>"
+          end
+        rescue EOFError
+        end
       end
-    rescue EOFError, Interrupt
     end
 
-    yield "</pre></body></html>"
+    yield foot
     exit! 0
   end
 
