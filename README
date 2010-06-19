@@ -1,0 +1,13 @@
+bcat reads from standard input and displays output in a web browser:
+
+    $ echo "hi mom" |bcat
+    $ echo "hi mom" |bcat -t 'Page Title'
+    $ echo "*hi mom*" |markdown |bcat -h
+
+Browser output is displayed progressively as it's read from standard input,
+making bcat especially useful with build tools and commands like tail(1) that
+generate output over longer periods of time:
+
+    $ make all  |bcat
+    $ rake test |bcat
+    $ tail -f /var/log/syslog |bcat
