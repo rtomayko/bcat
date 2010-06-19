@@ -13,13 +13,17 @@ fds =
   end
 fds = [$stdin] if fds.empty?
 
+command = ENV['BCAT_COMMAND'] || 'open $BCAT_ARGS "$BCAT_URL"'
+
 pid = nil
 bcat = Bcat.new(fds)
 bcat.serve! do |sock|
   pid =
     fork do
       (fds + [sock, $stdin, $stdout]).uniq.each { |fd| fd.close }
-      exec "open http://#{bcat[:Host]}:#{bcat[:Port]}/#{File.basename(Dir.pwd)}"
+      ENV['BCAT_URL'] = "http://#{bcat[:Host]}:#{bcat[:Port]}/#{File.basename(Dir.pwd)}"
+      ENV['BCAT_ARGS'] = "-a '#{ENV['BCAT_APPLICATION']}'" if !ENV['BCAT_APPLICATION'].to_s.empty?
+      exec "/bin/sh -c \"#{command}\""
     end
 end
 
