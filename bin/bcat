@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # Usage: bcat [<file>]...
-# Concatenate <file>s, or standard input, to browser.
+# Read standard input, or one or more <file>s, and write to browser.
 require 'bcat'
 
 fds =

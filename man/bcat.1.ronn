@@ -1,0 +1,27 @@
+bcat(1) -- browser cat
+======================
+
+## SYNOPSIS
+
+`bcat`<br>
+`bcat` <file>... [-]<br>
+
+## DESCRIPTION
+
+The `bcat` utility reads from standard input, or one or more <file>s, and writes
+output to a web browser progressively.  When <file> is '-'
+
+## ENVIRONMENT
+
+  * `BCAT_COMMAND`=`open -a $BCAT_APPLICATION $url`:
+  * `BCAT_COMMAND`=`xdg-open "$url"`:
+    The command used to launch to the browser application.
+
+  * `BCAT_APPLICATION`=[`Safari | Google Chrome | Firefox`]:
+    MacOS X only. The name of the Application . This is given as the value of
+    the `-a` argument to open(1). When `BCAT_APPLICATION` is undefined, the
+    system default browser is used.
+
+## SEE ALSO
+
+cat(1), open(1)
