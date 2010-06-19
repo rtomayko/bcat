@@ -20,7 +20,7 @@ class Bcat
 
   def head
     ["<html>",
-     "<head><title>bcat</title></head>",
+     "<head><title>#{self[:title] || 'bcat'}</title></head>",
      "<body><pre>"].join
   end
 
@@ -31,6 +31,7 @@ class Bcat
   def escape_js(string)
     string = string.gsub(/['\\]/) { |char| "\\#{char}" }
     string.gsub!(/\n/, '\n')
+    string
   end
 
   def each
