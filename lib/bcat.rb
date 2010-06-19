@@ -28,6 +28,11 @@ class Bcat
     "</pre></body></html>"
   end
 
+  def escape_js(string)
+    string = string.gsub(/['\\]/) { |char| "\\#{char}" }
+    string.gsub!(/\n/, '\n')
+  end
+
   def each
     yield "\n" * 1000
     yield "<!DOCTYPE html>\n"
@@ -37,9 +42,12 @@ class Bcat
       @fds.each do |fd|
         begin
           while buf = fd.readpartial(4096)
-            output = escape_html(buf)
-            output = output.gsub(/\n/, "<br>")
-            yield "<script>document.write('#{output}');</script>"
+            if !self[:html]
+              buf = escape_html(buf)
+              buf.gsub!(/\n/, "<br>")
+            end
+            buf = escape_js(buf)
+            yield "<script>document.write('#{buf}');</script>"
           end
         rescue EOFError
         ensure

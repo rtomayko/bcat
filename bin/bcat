@@ -1,7 +1,23 @@
 #!/usr/bin/env ruby
-# Usage: bcat [<file>]...
-# Read standard input, or one or more <file>s, and write to browser.
+#/ Usage: bcat [-h] [<file>]...
+#/ Read standard input, or one or more <file>s, and write to browser.
+#/
+#/ Options
+#/   -h, --html       input is html encoded.
+require 'optparse'
 require 'bcat'
+
+options = {
+  :html => false,
+  :Host => 'localhost',
+  :Port => 8091
+}
+
+ARGV.options do |argv|
+  argv.on('-h', '--html') { options[:html] = true }
+  argv.on_tail('--help') { exec "grep ^#/ #{__FILE__} | cut -c4-" }
+  argv.parse!
+end
 
 fds =
   ARGV.map do |file|
@@ -17,7 +33,7 @@ command = ENV['BCAT_COMMAND'] || 'open $BCAT_ARGS "$BCAT_URL"'
 
 pid = nil
 begin
-  bcat = Bcat.new(fds)
+  bcat = Bcat.new(fds, options)
   bcat.serve! do |sock|
     pid =
       fork do

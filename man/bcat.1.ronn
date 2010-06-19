@@ -3,13 +3,20 @@ bcat(1) -- browser cat
 
 ## SYNOPSIS
 
-`bcat`<br>
-`bcat` <file>... [-]<br>
+`bcat` [-h] [<file>...]<br>
 
 ## DESCRIPTION
 
 The `bcat` utility reads from standard input, or one or more <file>s, and writes
-output to a web browser progressively.  When <file> is '-'
+output to a web browser progressively. A <file> may be '-', in which case
+standard input is concatenated at the position specified.
+
+  * `-h`, `--html`:
+    Do not HTML encode input. By default, `bcat` assumes input is plain text
+    and entity encodes any `<` or `&` characters, converts raw end-of-line
+    characters (`\n`) to `<br>` tags, and wraps output in a `<pre>` block. The
+    `--html` option disables all of these conversions, causing the input text
+    to be written directly as HTML.
 
 ## ENVIRONMENT
 
