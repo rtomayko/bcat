@@ -41,12 +41,17 @@ class Bcat
             yield "<script>document.write('#{output}');</script>"
           end
         rescue EOFError
+        ensure
+          fd.close rescue nil
         end
       end
     end
 
     yield foot
-    exit! 0
+  end
+
+  def close
+    raise Interrupt
   end
 
   def to_app
