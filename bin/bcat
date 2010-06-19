@@ -3,12 +3,14 @@
 # Concatenate <file>s, or standard input, to browser.
 require 'bcat'
 
-bcat = Bcat.new
+pid = nil
+bcat = Bcat.new($stdin)
 bcat.serve! do |sock|
-  fork do
-    sock.close
-    $stdin.close
-    $stdout.close
-    exec "open http://#{bcat[:Host]}:#{bcat[:Port]}/#{File.basename(Dir.pwd)}"
-  end
+  pid =
+    fork do
+      [sock, $stdin, $stdout].each { |fd| fd.close }
+      exec "open http://#{bcat[:Host]}:#{bcat[:Port]}/#{File.basename(Dir.pwd)}"
+    end
 end
+
+Process.wait(pid) if pid
