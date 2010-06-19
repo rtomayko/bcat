@@ -21,11 +21,11 @@ class Bcat
   def head
     ["<html>",
      "<head><title>#{self[:title] || 'bcat'}</title></head>",
-     "<body><pre>"].join
+     "<body>"].join
   end
 
   def foot
-    "</pre></body></html>"
+    "</body></html>"
   end
 
   def escape_js(string)
@@ -38,6 +38,7 @@ class Bcat
     yield "\n" * 1000
     yield "<!DOCTYPE html>\n"
     yield head
+    yield "<pre>" if !self[:html]
 
     begin
       @fds.each do |fd|
@@ -57,6 +58,7 @@ class Bcat
       end
     end
 
+    yield "</pre>" if !self[:html]
     yield foot
   end
 
