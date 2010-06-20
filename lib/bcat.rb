@@ -24,6 +24,18 @@ class Bcat
     @config[key]
   end
 
+  def to_app
+    app = self
+    Rack::Builder.new do
+      use Rack::Chunked
+      run app
+    end
+  end
+
+  def serve!(&bk)
+    Rack::Handler::KidGloves.run to_app, @config, &bk
+  end
+
   def call(env)
     notice "#{env['REQUEST_METHOD']} #{env['PATH_INFO'].inspect}"
     [200, {"Content-Type" => "text/html;charset=utf-8"}, self]
@@ -82,18 +94,6 @@ class Bcat
   def close
     notice "closing with interrupt"
     raise Interrupt
-  end
-
-  def to_app
-    app = self
-    Rack::Builder.new do
-      use Rack::Chunked
-      run app
-    end
-  end
-
-  def serve!(&bk)
-    Rack::Handler::KidGloves.run to_app, @config, &bk
   end
 
   def notice(message)
