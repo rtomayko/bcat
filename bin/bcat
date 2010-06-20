@@ -33,9 +33,10 @@ ARGV.push '-' if ARGV.empty?
 
 require 'bcat'
 notice "loaded bcat v#{Bcat::VERSION}"
-command = ENV['BCAT_COMMAND'] || 'open $BCAT_ARGS "$BCAT_URL"'
+
+include Bcat::Browser
 notice "env BCAT_APPLICATION=#{ENV['BCAT_APPLICATION'].inspect}"
-notice "env BCAT_COMMAND=#{command.inspect}"
+notice "env BCAT_COMMAND=#{browser_command.inspect}"
 
 reader =
   if File.basename($0) =~ /tee$/
@@ -49,14 +50,8 @@ pid = nil
 begin
   bcat = Bcat.new(reader, options)
   bcat.serve! do |sock|
-    pid =
-      fork do
-        (reader.fds + [sock, $stdin, $stdout]).uniq.each { |fd| fd.close }
-        ENV['BCAT_URL'] = "http://#{bcat[:Host]}:#{bcat[:Port]}/#{File.basename(Dir.pwd)}"
-        ENV['BCAT_ARGS'] = "-a '#{ENV['BCAT_APPLICATION']}'" if !ENV['BCAT_APPLICATION'].to_s.empty?
-        notice "exec #{command.inspect}"
-        exec "/bin/sh -c \"#{command}\""
-      end
+    url = "http://#{bcat[:Host]}:#{bcat[:Port]}/#{File.basename(Dir.pwd)}"
+    pid = browser(url)
   end
 rescue Interrupt
   notice "interrupt"

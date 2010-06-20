@@ -1,6 +1,7 @@
 require 'rack'
 require 'bcat/reader'
 require 'bcat/kidgloves'
+require 'bcat/browser'
 
 class Bcat
   VERSION = '0.0.1'
