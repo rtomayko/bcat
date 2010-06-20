@@ -4,7 +4,7 @@ require 'bcat/kidgloves'
 require 'bcat/browser'
 
 class Bcat
-  VERSION = '0.0.1'
+  VERSION = '0.2.0'
   include Rack::Utils
 
   def initialize(reader, config={})
