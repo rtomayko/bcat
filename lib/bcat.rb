@@ -21,6 +21,25 @@ class Bcat
     [200, {"Content-Type" => "text/html;charset=utf-8"}, self]
   end
 
+  def each
+    yield "\n" * 1000
+    yield "<!DOCTYPE html>\n"
+    yield head
+    yield "<pre>" if !self[:html]
+
+    @reader.each do |buf|
+       if !self[:html]
+         buf = escape_html(buf)
+         buf.gsub!(/\n/, "<br>")
+       end
+       buf = escape_js(buf)
+       yield "<script>document.write('#{buf}');</script>"
+    end
+
+    yield "</pre>" if !self[:html]
+    yield foot
+  end
+
   def head
     ["<html>",
      "<head><title>#{self[:title] || 'bcat'}</title></head>",
@@ -35,27 +54,6 @@ class Bcat
     string = string.gsub(/['\\]/) { |char| "\\#{char}" }
     string.gsub!(/\n/, '\n')
     string
-  end
-
-  def each
-    yield "\n" * 1000
-    yield "<!DOCTYPE html>\n"
-    yield head
-    yield "<pre>" if !self[:html]
-
-    begin
-      @reader.each do |buf|
-         if !self[:html]
-           buf = escape_html(buf)
-           buf.gsub!(/\n/, "<br>")
-         end
-         buf = escape_js(buf)
-         yield "<script>document.write('#{buf}');</script>"
-      end
-    end
-
-    yield "</pre>" if !self[:html]
-    yield foot
   end
 
   def close
