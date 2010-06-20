@@ -39,18 +39,18 @@ class Bcat
     # The head contents without any DOCTYPE, <html>, or <head> tags. This should
     # consist of only <style>, <script>, <link>, <meta>, and <title> tags.
     def head
-      @head.join.gsub!(/<\/?(?:html|head|!DOCTYPE).*?>/mi, '')
+      @head.join.gsub(/<\/?(?:html|head|!DOCTYPE).*?>/mi, '')
     end
 
     # The current body contents. The <body> tag is guaranteed to be present. If
     # a <body> was included in the input, it's preserved with original
     # attributes; otherwise, a <body> tag is inserted. The inject argument can
     # be used to insert a string as the immediate descendant of the <body> tag.
-    def body(inject='')
+    def body(inject=nil)
       if @body =~ /\A\s*(<body.*?>)(.*)/mi
-        [$1, inject, $2].join("\n")
+        [$1, inject, $2].compact.join("\n")
       else
-        ["<body>", inject, @body].join("\n")
+        ["<body>", inject, @body].compact.join("\n")
       end
     end
 

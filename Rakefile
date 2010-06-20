@@ -1,4 +1,26 @@
 require 'date'
+task :default => :test
+
+ROOTDIR = File.expand_path('..', __FILE__).sub(/#{Dir.pwd}(?=\/)/, '.')
+LIBDIR  = "#{ROOTDIR}/lib"
+BINDIR  = "#{ROOTDIR}/bin"
+
+task :environment do
+  $:.unshift ROOTDIR if !$:.include?(ROOTDIR)
+  $:.unshift LIBDIR  if !$:.include?(LIBDIR)
+  ENV['RUBYLIB'] = $LOAD_PATH.join(':')
+  ENV['PATH'] = "#{BINDIR}:#{ENV['PATH']}"
+end
+
+desc 'Run tests'
+task :test => :environment do
+  $LOAD_PATH.unshift "#{ROOTDIR}/test"
+  Dir['test/test_*.rb'].each { |f| require(f) }
+end
+
+def source_version
+  @source_version ||= `ruby -Ilib -rbcat -e 'puts Bcat::VERSION'`.chomp
+end
 
 require 'rubygems'
 $spec = eval(File.read('bcat.gemspec'))
@@ -13,10 +35,6 @@ task :man do
   ENV['RONN_MANUAL']  = "Bcat #{source_version}"
   ENV['RONN_ORGANIZATION'] = "Ryan Tomayko"
   sh "ronn -w -r5 man/*.ronn"
-end
-
-def source_version
-  @source_version ||= `ruby -Ilib -rbcat -e 'puts Bcat::VERSION'`.chomp
 end
 
 file 'bcat.gemspec' => FileList['{lib,test,bin}/**','Rakefile'] do |f|
