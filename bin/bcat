@@ -11,7 +11,7 @@ require 'optparse'
 options = {
   :html  => false,
   :title => Dir.pwd,
-  :Host  => 'localhost',
+  :Host  => '127.0.0.1',
   :Port  => 8091,
   :debug => false
 }
