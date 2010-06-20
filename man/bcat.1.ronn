@@ -4,12 +4,18 @@ bcat(1) -- browser cat
 ## SYNOPSIS
 
 `bcat` [-htad] [<file>...]<br>
+`btee` [-htad] [<file>...]
 
 ## DESCRIPTION
 
-The `bcat` utility reads from standard input, or one or more <file>s, and writes
-output to a web browser progressively. A <file> may be '-', in which case
-standard input is concatenated at the position specified.
+The `bcat` utility reads from standard input, or one or more <file>s, and pipes
+output into a web browser. <file> may be '-', in which case standard input is
+concatenated at that position.
+
+When invoked as `btee`, all input is written immediately to standard output in
+addition to being piped into the browser.
+
+## OPTIONS
 
   * `-t`, `--title`=<text>:
     Use <text> as the page `<title>`. By default, the path to the current working
@@ -22,7 +28,7 @@ standard input is concatenated at the position specified.
     `--html` option disables all of these conversions, causing the input text
     to be written directly as HTML.
 
-  * `-a`, `--app=`[`Safari`|`Google Chrome`|`Firefox`]:
+  * `-a`, `--app`=`Safari`|`Google Chrome`|`Firefox`:
     MacOS only. The name of the browser application. This can also be set using
     the `BCAT_APPLICATION` environment variable.
 
@@ -43,4 +49,4 @@ standard input is concatenated at the position specified.
 
 ## SEE ALSO
 
-cat(1), open(1)
+cat(1), tee(1), open(1)

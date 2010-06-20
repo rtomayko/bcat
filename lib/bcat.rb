@@ -1,12 +1,13 @@
 require 'rack'
+require 'bcat/reader'
 require 'bcat/kidgloves'
 
 class Bcat
   VERSION = '0.0.1'
   include Rack::Utils
 
-  def initialize(fds=[$stdin], config={})
-    @fds = fds
+  def initialize(reader, config={})
+    @reader = reader
     @config = {:Host => '127.0.0.1', :Port => 8091}.merge(config)
   end
 
@@ -42,22 +43,13 @@ class Bcat
     yield "<pre>" if !self[:html]
 
     begin
-      @fds.each do |fd|
-        notice "streaming fd#{fd.to_i}"
-        begin
-          while buf = fd.readpartial(4096)
-            if !self[:html]
-              buf = escape_html(buf)
-              buf.gsub!(/\n/, "<br>")
-            end
-            buf = escape_js(buf)
-            yield "<script>document.write('#{buf}');</script>"
-          end
-        rescue EOFError
-          notice "eof fd#{fd.to_i}"
-        ensure
-          fd.close rescue nil
-        end
+      @reader.each do |buf|
+         if !self[:html]
+           buf = escape_html(buf)
+           buf.gsub!(/\n/, "<br>")
+         end
+         buf = escape_js(buf)
+         yield "<script>document.write('#{buf}');</script>"
       end
     end
 

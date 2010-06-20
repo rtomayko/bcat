@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
-#/ Usage: bcat [-h] [<file>]...
-#/ Read standard input, or one or more <file>s, and write to browser.
+#/ Usage: bcat [-h] [-t <title>] [<file>]...
+#/        btee <options> [<file>]...
+#/ Read standard input, or one or more <file>s, and write to browser. When
+#/ invoked as btee, also write input to standard output.
 #/
 #/ Options
 #/   -h, --html          input is html encoded
@@ -27,33 +29,29 @@ ARGV.options do |argv|
   argv.on_tail('--help') { exec "grep ^#/ <#{__FILE__} | cut -c4-" }
   argv.parse!
 end
+ARGV.push '-' if ARGV.empty?
 
 require 'bcat'
 notice "loaded bcat v#{Bcat::VERSION}"
-fds =
-  ARGV.map do |file|
-    if file == '-'
-      notice "using stdin"
-      $stdin
-    else
-      notice "opening #{file.inspect}"
-      File.open(file, 'rb')
-    end
-  end
-fds = [$stdin] if fds.empty?
-
 command = ENV['BCAT_COMMAND'] || 'open $BCAT_ARGS "$BCAT_URL"'
 notice "env BCAT_APPLICATION=#{ENV['BCAT_APPLICATION'].inspect}"
 notice "env BCAT_COMMAND=#{command.inspect}"
 
+reader =
+  if File.basename($0) =~ /tee$/
+    Bcat::TeeReader.new(ARGV, $stdout)
+  else
+    Bcat::Reader.new(ARGV)
+  end
+
 notice "starting server"
 pid = nil
 begin
-  bcat = Bcat.new(fds, options)
+  bcat = Bcat.new(reader, options)
   bcat.serve! do |sock|
     pid =
       fork do
-        (fds + [sock, $stdin, $stdout]).uniq.each { |fd| fd.close }
+        (reader.fds + [sock, $stdin, $stdout]).uniq.each { |fd| fd.close }
         ENV['BCAT_URL'] = "http://#{bcat[:Host]}:#{bcat[:Port]}/#{File.basename(Dir.pwd)}"
         ENV['BCAT_ARGS'] = "-a '#{ENV['BCAT_APPLICATION']}'" if !ENV['BCAT_APPLICATION'].to_s.empty?
         notice "exec #{command.inspect}"
