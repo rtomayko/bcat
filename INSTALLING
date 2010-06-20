@@ -1,0 +1,5 @@
+bcat is usually installed with rubygems:
+
+    $ gem install bcat
+
+bcat depends on the rack package.

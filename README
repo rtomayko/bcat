@@ -1,7 +1,17 @@
-bcat reads from standard input and displays output in a web browser:
+bcat
+    http://github.com/rtomayko/bcat
+    git clone git://github.com/rtomayko/bcat.git
+    gem install bcat
+
+bcat is a pipe to browser utility. It reads from standard input and displays
+what it reads in a web browser:
 
     $ echo "hi mom" |bcat
-    $ echo "hi mom" |bcat -t 'Page Title'
+    $ echo "hi mom" |bcat -t 'Important Message'
+
+bcat assumes its input is plain text, but you can also pipe in HTML:
+
+    $ echo "<h1>hi mom</h1>" |bcat -h
     $ echo "*hi mom*" |markdown |bcat -h
 
 Browser output is displayed progressively as it's read from standard input,
@@ -11,3 +21,19 @@ generate output over longer periods of time:
     $ make all  |bcat
     $ rake test |bcat
     $ tail -f /var/log/syslog |bcat
+    $ (while printf .; do sleep 1; done) |bcat
+
+See the bcat(1) manual for detailed command usage.
+
+bcat is known to work under MacOS X, Linux, and FreeBSD (other UNIX-like
+environments with freedesktop.org integration should work fine too). Progressive
+output has been tested under Safari, Firefox, Chrome, and GNOME Epiphany.
+
+See the INSTALLING, COPYING, and CONTRIBUTING files for information on those
+things.
+
+bcat was inspired by the HTML output capabilities included in TextMate
+and a desire to have those capabilities from the shell and within editors
+like Vim.
+  <http://manual.macromates.com/en/commands#html_output>
+  <http://blog.macromates.com/2005/html-output-for-commands/>
