@@ -17,9 +17,14 @@ standard input is concatenated at the position specified.
     characters (`\n`) to `<br>` tags, and wraps output in a `<pre>` block. The
     `--html` option disables all of these conversions, causing the input text
     to be written directly as HTML.
+
   * `-t`, `--title`=<text>:
     Use <text> as the page `<title>`. By default, the path to the current working
     directory is used as the title.
+
+  * `-d`, `--debug`:
+    Turn on verbose debug logging to standard error. Include this output when
+    reporting defects if applicable.
 
 ## ENVIRONMENT
 

@@ -15,6 +15,7 @@ class Bcat
   end
 
   def call(env)
+    notice "#{env['REQUEST_METHOD']} #{env['PATH_INFO'].inspect}"
     [200, {"Content-Type" => "text/html;charset=utf-8"}, self]
   end
 
@@ -42,6 +43,7 @@ class Bcat
 
     begin
       @fds.each do |fd|
+        notice "streaming fd#{fd.to_i}"
         begin
           while buf = fd.readpartial(4096)
             if !self[:html]
@@ -52,6 +54,7 @@ class Bcat
             yield "<script>document.write('#{buf}');</script>"
           end
         rescue EOFError
+          notice "eof fd#{fd.to_i}"
         ensure
           fd.close rescue nil
         end
@@ -63,6 +66,7 @@ class Bcat
   end
 
   def close
+    notice "closing with interrupt"
     raise Interrupt
   end
 
@@ -76,5 +80,10 @@ class Bcat
 
   def serve!(&bk)
     Rack::Handler::KidGloves.run to_app, @config, &bk
+  end
+
+  def notice(message)
+    return if !@config[:debug]
+    warn "#{File.basename($0)}: #{message}"
   end
 end

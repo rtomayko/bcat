@@ -5,35 +5,47 @@
 #/ Options
 #/   -h, --html          input is html encoded
 #/   -t, --title=<text>  use <text> as the page title
+#/   -d, --debug         enable verbose debug logging on stderr
 require 'optparse'
-require 'bcat'
 
 options = {
   :html  => false,
   :title => Dir.pwd,
   :Host  => 'localhost',
-  :Port  => 8091
+  :Port  => 8091,
+  :debug => false
 }
+
+(class <<self;self;end).send(:define_method, :notice) { |message|
+  warn "#{File.basename($0)}: #{message}" if options[:debug] }
 
 ARGV.options do |argv|
   argv.on('-h', '--html')    { options[:html] = true }
   argv.on('-t', '--title=v') { |text| options[:title] = text }
+  argv.on('-d', '--debug')   { options[:debug] = true }
   argv.on_tail('--help') { exec "grep ^#/ <#{__FILE__} | cut -c4-" }
   argv.parse!
 end
 
+require 'bcat'
+notice "loaded bcat v#{Bcat::VERSION}"
 fds =
   ARGV.map do |file|
     if file == '-'
+      notice "using stdin"
       $stdin
     else
+      notice "opening #{file.inspect}"
       File.open(file, 'rb')
     end
   end
 fds = [$stdin] if fds.empty?
 
 command = ENV['BCAT_COMMAND'] || 'open $BCAT_ARGS "$BCAT_URL"'
+notice "env BCAT_APPLICATION=#{ENV['BCAT_APPLICATION'].inspect}"
+notice "env BCAT_COMMAND=#{command.inspect}"
 
+notice "starting server"
 pid = nil
 begin
   bcat = Bcat.new(fds, options)
@@ -43,11 +55,15 @@ begin
         (fds + [sock, $stdin, $stdout]).uniq.each { |fd| fd.close }
         ENV['BCAT_URL'] = "http://#{bcat[:Host]}:#{bcat[:Port]}/#{File.basename(Dir.pwd)}"
         ENV['BCAT_ARGS'] = "-a '#{ENV['BCAT_APPLICATION']}'" if !ENV['BCAT_APPLICATION'].to_s.empty?
+        notice "exec #{command.inspect}"
         exec "/bin/sh -c \"#{command}\""
       end
   end
 rescue Interrupt
+  notice "interrupt"
 end
 
 Process.wait(pid) if pid
-exit $?
+status = $?
+notice "open exited with #{status}"
+exit status
