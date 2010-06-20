@@ -8,10 +8,16 @@ class Bcat
   VERSION = '0.2.0'
   include Rack::Utils
 
-  def initialize(reader, config={})
-    @reader = reader
+  attr_reader :format
+
+  def initialize(files=[], config={})
     @config = {:Host => '127.0.0.1', :Port => 8091}.merge(config)
-    @reader = TextFilter.new(@reader) if !@config[:html]
+    @reader = Bcat::Reader.new(files)
+    @format = @config[:format] || @reader.sniff
+
+    @filter = @reader
+    @filter = TeeFilter.new(@filter) if @config[:tee]
+    @filter = TextFilter.new(@filter) if @format == 'text'
   end
 
   def [](key)
@@ -26,7 +32,7 @@ class Bcat
   def each
     head_parser = Bcat::HeadParser.new
 
-    @reader.each do |buf|
+    @filter.each do |buf|
       if head_parser.nil?
         yield buf
       elsif head_parser.feed(buf)
@@ -44,8 +50,9 @@ class Bcat
     yield foot
   rescue Errno::EINVAL
     # socket was closed
+    notice "browser client went away"
   rescue => boom
-    warn "error: #{boom.class}: #{boom.to_s}"
+    notice "boom: #{boom.class}: #{boom.to_s}"
     raise
   end
 

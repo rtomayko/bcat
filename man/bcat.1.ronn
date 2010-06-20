@@ -17,16 +17,26 @@ addition to being piped into the browser.
 
 ## OPTIONS
 
-  * `-t`, `--title`=<text>:
-    Use <text> as the page `<title>`. By default, the path to the current working
-    directory is used as the title.
+By default, `bcat` attempts to detect whether input is HTML or plain text using
+a simple heuristic, but you can force input to be treated as one or the other
+with these options:
+
+  * `-t`, `--text`:
+    The input is non-HTML encoded text. All bare `<` and `&` characters are
+    entity encoded, end-of-line characters are converted to `<br>`, and the
+    entire output is wrapped in a `<pre>`.
 
   * `-h`, `--html`:
-    Do not HTML encode input. By default, `bcat` assumes input is plain text
-    and entity encodes any `<` or `&` characters, converts raw end-of-line
-    characters (`\n`) to `<br>` tags, and wraps output in a `<pre>` block. The
-    `--html` option disables all of these conversions, causing the input text
-    to be written directly as HTML.
+    The input is already HTML encoded. Under this mode, bcat passes input
+    through to the browser mostly unmodified. The input may be a full HTML
+    document, or it may be an HTML fragment. `bcat` outputs `<html>`, `<head>`,
+    and `<body>` elements even if they are not included in the input.
+
+Customiza
+
+  * `-T`, `--title`=<text>:
+    Use <text> as the page `<title>`. By default, the path to the current working
+    directory is used as the title.
 
   * `-a`, `--app`=`Safari`|`Google Chrome`|`Firefox`:
     MacOS only. The name of the browser application. This can also be set using

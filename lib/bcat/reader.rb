@@ -17,35 +17,53 @@ class Bcat
             File.open(f, 'rb')
           end
         end
+      @buf = []
     end
 
     def each
-      fds.each do |fd|
+      yield @buf.shift while @buf.any?
+      while fd = fds.first
         fd.sync = true
         begin
           while buf = fd.readpartial(4096)
             yield buf
           end
         rescue EOFError
-        ensure
           fd.close
         end
+        fds.shift
       end
+    end
+
+    def sniff
+      @format ||=
+        catch :detect do
+          each do |chunk|
+            @buf << chunk
+            case chunk
+            when /\A\s*</m
+              throw :detect, 'html'
+            when /\A\s*[^<]/m
+              throw :detect, 'text'
+            end
+          end
+          throw :detect, 'text'
+        end
     end
   end
 
   # Like Reader but writes all input to an output IO object in addition to
   # yielding to the block.
-  class TeeReader < Reader
-    def initialize(files=[], out=$stdout)
+  class TeeFilter
+    def initialize(source, out=$stdout)
+      @source = source
       @out = out
-      super(files)
     end
 
     def each
-      super() do |chunk|
-        @out.write chunk
+      @source.each do |chunk|
         yield chunk
+        @out.write chunk
       end
     end
   end
@@ -53,8 +71,9 @@ class Bcat
   class TextFilter
     include Rack::Utils
 
-    def initialize(source)
+    def initialize(source, force=false)
       @source = source
+      @force = force
     end
 
     def each
