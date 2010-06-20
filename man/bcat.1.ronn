@@ -3,13 +3,17 @@ bcat(1) -- browser cat
 
 ## SYNOPSIS
 
-`bcat` [-ht] [<file>...]<br>
+`bcat` [-htad] [<file>...]<br>
 
 ## DESCRIPTION
 
 The `bcat` utility reads from standard input, or one or more <file>s, and writes
 output to a web browser progressively. A <file> may be '-', in which case
 standard input is concatenated at the position specified.
+
+  * `-t`, `--title`=<text>:
+    Use <text> as the page `<title>`. By default, the path to the current working
+    directory is used as the title.
 
   * `-h`, `--html`:
     Do not HTML encode input. By default, `bcat` assumes input is plain text
@@ -18,9 +22,9 @@ standard input is concatenated at the position specified.
     `--html` option disables all of these conversions, causing the input text
     to be written directly as HTML.
 
-  * `-t`, `--title`=<text>:
-    Use <text> as the page `<title>`. By default, the path to the current working
-    directory is used as the title.
+  * `-a`, `--app=`[`Safari`|`Google Chrome`|`Firefox`]:
+    MacOS only. The name of the browser application. This can also be set using
+    the `BCAT_APPLICATION` environment variable.
 
   * `-d`, `--debug`:
     Turn on verbose debug logging to standard error. Include this output when
@@ -32,10 +36,10 @@ standard input is concatenated at the position specified.
   * `BCAT_COMMAND`=`xdg-open "$url"`:
     The command used to launch to the browser application.
 
-  * `BCAT_APPLICATION`=[`Safari | Google Chrome | Firefox`]:
-    MacOS X only. The name of the Application . This is given as the value of
-    the `-a` argument to open(1). When `BCAT_APPLICATION` is undefined, the
-    system default browser is used.
+  * `BCAT_APPLICATION`=[`Safari` | `Google Chrome` | `Firefox`]:
+    MacOS X only. The name of the browser application . This is given as the
+    value of the `-a` argument to open(1). When `BCAT_APPLICATION` is undefined,
+    the system default browser is used.
 
 ## SEE ALSO
 

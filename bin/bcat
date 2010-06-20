@@ -21,6 +21,7 @@ options = {
 
 ARGV.options do |argv|
   argv.on('-h', '--html')    { options[:html] = true }
+  argv.on('-a', '--app=v')   { |app|  ENV['BCAT_APPLICATION'] = app }
   argv.on('-t', '--title=v') { |text| options[:title] = text }
   argv.on('-d', '--debug')   { options[:debug] = true }
   argv.on_tail('--help') { exec "grep ^#/ <#{__FILE__} | cut -c4-" }
