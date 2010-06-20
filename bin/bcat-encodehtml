@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+# Usage: bcat-encodehtml
+# Read text from stdin and write HTML encoded result to stdout.
+
+while char = $stdin.getc
+  case char
+  when ?<
+    $stdout.write('&lt;')
+  when ?&
+    $stdout.write('&amp;')
+  else
+    $stdout.putc(char)
+  end
+end
