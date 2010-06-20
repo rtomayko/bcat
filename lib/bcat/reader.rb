@@ -1,3 +1,5 @@
+require 'rack/utils'
+
 class Bcat
   # ARGF style multi-file streaming interface. Input is read with IO#readpartial
   # to avoid buffering.
@@ -45,6 +47,24 @@ class Bcat
         @out.write chunk
         yield chunk
       end
+    end
+  end
+
+  class TextFilter
+    include Rack::Utils
+
+    def initialize(source)
+      @source = source
+    end
+
+    def each
+      yield "<pre>"
+      @source.each do |chunk|
+        chunk = escape_html(chunk)
+        chunk = "<span>#{chunk}</span>" if !chunk.gsub!(/\n/, "<br>")
+        yield chunk
+      end
+      yield "</pre>"
     end
   end
 end

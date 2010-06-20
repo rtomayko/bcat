@@ -1,5 +1,6 @@
 require 'rack'
 require 'bcat/reader'
+require 'bcat/html'
 require 'bcat/kidgloves'
 require 'bcat/browser'
 
@@ -10,6 +11,7 @@ class Bcat
   def initialize(reader, config={})
     @reader = reader
     @config = {:Host => '127.0.0.1', :Port => 8091}.merge(config)
+    @reader = TextFilter.new(@reader) if !@config[:html]
   end
 
   def [](key)
@@ -22,28 +24,42 @@ class Bcat
   end
 
   def each
-    yield "\n" * 1000
-    yield "<!DOCTYPE html>\n"
-    yield head
-    yield "<pre>" if !self[:html]
+    head_parser = Bcat::HeadParser.new
 
     @reader.each do |buf|
-       if !self[:html]
-         buf = escape_html(buf)
-         buf.gsub!(/\n/, "<br>")
-       end
-       buf = escape_js(buf)
-       yield "<script>document.write('#{buf}');</script>"
+      if head_parser.nil?
+        yield buf
+      elsif head_parser.feed(buf)
+        yield content_for_head(inject=head_parser.head)
+        yield head_parser.body
+        head_parser = nil
+      end
     end
 
-    yield "</pre>" if !self[:html]
+    if head_parser
+      yield content_for_head(inject=head_parser.head) +
+            head_parser.body
+    end
+
     yield foot
+  rescue Errno::EINVAL
+    # socket was closed
+  rescue => boom
+    warn "error: #{boom.class}: #{boom.to_s}"
+    raise
   end
 
-  def head
-    ["<html>",
-     "<head><title>#{self[:title] || 'bcat'}</title></head>",
-     "<body>"].join
+  def content_for_head(inject='')
+    [
+      "\n" * 1000,
+      "<!DOCTYPE html>",
+      "<html>",
+      "<head>",
+      "<!-- bcat was here -->",
+      "<title>#{self[:title] || 'bcat'}</title>",
+      inject.to_s,
+      "</head>"
+    ].join("\n")
   end
 
   def foot
