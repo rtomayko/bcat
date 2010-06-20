@@ -15,9 +15,9 @@ class Bcat
       return ENV['BCAT_COMMAND'] if !ENV['BCAT_COMMAND'].to_s.empty?
 
       case `uname`
-      when /Linux/  ; 'xdg-open $BCAT_ARGS "$BCAT_URL"'
-      when /Darwin/ ; 'open $BCAT_ARGS "$BCAT_URL"'
-      else          ; 'firefox "$BCAT_URL"'
+      when /Darwin/       ; 'open $BCAT_ARGS "$BCAT_URL"'
+      when /Linux/, /BSD/ ; 'xdg-open $BCAT_ARGS "$BCAT_URL"'
+      else                ; 'xdg-open "$BCAT_URL"'
       end
     end
   end
