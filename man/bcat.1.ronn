@@ -32,7 +32,7 @@ with these options:
     document, or it may be an HTML fragment. `bcat` outputs `<html>`, `<head>`,
     and `<body>` elements even if they are not included in the input.
 
-Customiza
+Customization
 
   * `-T`, `--title`=<text>:
     Use <text> as the page `<title>`. By default, the path to the current working
