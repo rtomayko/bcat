@@ -74,4 +74,18 @@ class ANSITest < Test::Unit::TestCase
       "<span style='color:#A00'>red</span></u></b>, normal"
     assert_equal expect, Bcat::ANSI.new(text).to_html
   end
+
+  test "multi-attribute sequences" do
+    text = "normal, \x1b[1;3;31mbold, underline, and red\x1b[0m, normal"
+    expect = "normal, <b><u><span style='color:#A00'>" +
+      "bold, underline, and red</span></u></b>, normal"
+    assert_equal expect, Bcat::ANSI.new(text).to_html
+  end
+
+  test "multi-attribute sequences with a trailing semi-colon" do
+    text = "normal, \x1b[1;3;31;mbold, underline, and red\x1b[0m, normal"
+    expect = "normal, <b><u><span style='color:#A00'>" +
+      "bold, underline, and red</span></u></b>, normal"
+    assert_equal expect, Bcat::ANSI.new(text).to_html
+  end
 end
