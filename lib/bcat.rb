@@ -6,7 +6,7 @@ require 'bcat/kidgloves'
 require 'bcat/browser'
 
 class Bcat
-  VERSION = '0.3.0'
+  VERSION = '0.4.0'
   include Rack::Utils
 
   attr_reader :format

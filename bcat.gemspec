@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name = 'bcat'
-  s.version = '0.3.0'
-  s.date = '2010-06-21'
+  s.version = '0.4.0'
+  s.date = '2010-06-23'
 
   s.summary     = "browser cat"
   s.description =
@@ -19,16 +19,21 @@ Gem::Specification.new do |s|
     README
     Rakefile
     bcat.gemspec
+    bin/a2h
     bin/bcat
-    bin/bcat-encodehtml
     bin/btee
     lib/bcat.rb
+    lib/bcat/ansi.rb
     lib/bcat/browser.rb
     lib/bcat/html.rb
     lib/bcat/kidgloves.rb
     lib/bcat/reader.rb
+    man/a2h.1.ronn
     man/bcat.1.ronn
     man/btee.1.ronn
+    test/test_bcat_a2h.rb
+    test/test_bcat_ansi.rb
+    test/test_bcat_browser.rb
     test/test_bcat_head_parser.rb
   ]
   # = MANIFEST =

@@ -1,0 +1,64 @@
+.\" generated with Ronn/v0.6.42
+.\" http://github.com/rtomayko/ronn/tree/0.6.6-36-gb67d494
+.
+.TH "BCAT" "1" "June 2010" "Ryan Tomayko" "Bcat 0.4.0"
+.
+.SH "NAME"
+\fBbcat\fR \- browser cat
+.
+.SH "SYNOPSIS"
+\fBbcat\fR [\-htad] [\fIfile\fR\.\.\.]
+.
+.br
+\fBbtee\fR [\-htad] [\fIfile\fR\.\.\.]
+.
+.SH "DESCRIPTION"
+The \fBbcat\fR utility reads from standard input, or one or more \fIfile\fRs, and pipes output into a web browser\. \fIfile\fR may be \'\-\', in which case standard input is concatenated at that position\.
+.
+.P
+When invoked as \fBbtee\fR, all input is written immediately to standard output in addition to being piped into the browser\.
+.
+.SH "OPTIONS"
+\fBbcat\fR opens a simple, undecorated page with the system default web browser and immediately begins streaming input\. The following options control the browser display:
+.
+.IP "\(bu" 4
+\fB\-b\fR, \fB\-\-browser\fR=default|firefox|safari|chrome|opera|\fIother\fR The name of the browser application\. Defaults to the value of the \fBBCAT_BROWSER\fR environment variable, or the system default browser when no \fBBCAT_BROWSER\fR is defined\.
+.
+.IP "\(bu" 4
+\fB\-T\fR, \fB\-\-title\fR=\fItext\fR: Use \fItext\fR as the page \fB<title>\fR\. By default, the path to the current working directory is used as the title\.
+.
+.IP "\(bu" 4
+\fB\-a\fR, \fB\-\-ansi\fR: Turns on VT100/ANSI escape sequence conversion\. This causes all input to be piped through a2h(1), replacing ANSI escape sequences with HTML for things like bold, underline, and colors\. On by default when the input is text; use the \fB\-a\fR option to turn it on when the input is HTML\.
+.
+.IP "" 0
+.
+.P
+By default, \fBbcat\fR attempts to detect whether input is HTML or plain text using a simple heuristic, but you can force input to be treated as one or the other with these options:
+.
+.TP
+\fB\-t\fR, \fB\-\-text\fR
+The input is non\-HTML encoded text\. All bare \fB<\fR and \fB&\fR characters are entity encoded, end\-of\-line characters are converted to \fB<br>\fR, and the entire output is wrapped in a \fB<pre>\fR\.
+.
+.TP
+\fB\-h\fR, \fB\-\-html\fR
+The input is already HTML encoded\. Under this mode, bcat passes input through to the browser mostly unmodified\. The input may be a full HTML document, or it may be an HTML fragment\. \fBbcat\fR outputs \fB<html>\fR, \fB<head>\fR, and \fB<body>\fR elements even if they are not included in the input\.
+.
+.P
+Miscellaneous options:
+.
+.TP
+\fB\-d\fR, \fB\-\-debug\fR
+Turn on verbose debug logging to standard error\. Include this output when reporting defects if applicable\.
+.
+.SH "ENVIRONMENT"
+.
+.TP
+\fBBCAT_BROWSER\fR=default|firefox|safari|chrome|opera|\fIother\fR
+The name of the browser to use by default\. \fBbcat\fR maps this to an actual browser command based on the current platform\. The special value \"default\" maps to the system default browser\.
+.
+.TP
+\fBBCAT_COMMAND\fR=\fIcommand\fR
+The entire browser command line (to be executed by \fB/bin/sh\fR)\. This overrides the \fBBCAT_BROWSER\fR environment variable and makes the \fB\-\-browser\fR (\fB\-b\fR) option a no\-op\. This should only be necessary when running a browser unknown to bcat or in order to pass special arguments\.
+.
+.SH "SEE ALSO"
+cat(1), tee(1), open(1)

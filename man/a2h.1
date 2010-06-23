@@ -1,0 +1,55 @@
+.\" generated with Ronn/v0.6.42
+.\" http://github.com/rtomayko/ronn/tree/0.6.6-36-gb67d494
+.
+.TH "A2H" "1" "June 2010" "Ryan Tomayko" "Bcat 0.4.0"
+.
+.SH "NAME"
+\fBa2h\fR \- convert ANSI/VT100 escape sequences to HTML
+.
+.SH "SYNOPSIS"
+\fBa2h\fR [\-] [\fIfile\fR\.\.\.]
+.
+.SH "DESCRIPTION"
+The \fBa2h\fR utility reads from standard input, or one or more \fIfile\fRs, and converts ANSI/VT100 escape sequences to inline HTML\.
+.
+.SH "ESCAPE SEQUENCES"
+The following escape sequences are supported:
+.
+.TP
+\fB<ESC>[0m\fR
+Resets all attributes / closes all HTML tags\.
+.
+.TP
+\fB<ESC>[1m\fR=\fB<b>\fR
+Bold\.
+.
+.TP
+\fB<ESC>[4m\fR=\fB<u>\fR
+Underscore\.
+.
+.TP
+\fB<ESC>[5m\fR=\fB<blink>\fR
+Blink\. Really\.
+.
+.TP
+\fB<ESC>[8m\fR=\fB<span style=\'display:none\'>\fR
+Hidden\.
+.
+.TP
+\fB<ESC>[30\-37m\fR=\fB<span style=\'color:\fR\fIcolor\fR\fB>\fR
+Foreground color\.
+.
+.TP
+\fB<ESC>[40\-47m\fR=\fB<span style=\'background\-color:\fR\fIcolor\fR\fB>\fR
+Background color\.
+.
+.TP
+\fB<ESC>[90\-97m\fR=\fB<span style=\'color:\fR\fIcolor\fR\fB>\fR
+Light foreground colors\.
+.
+.TP
+\fB<ESC>[100\-107m\fR=\fB<span style=\'background\-color:\fR\fIcolor\fR\fB>\fR
+Light background color\.
+.
+.SH "SEE ALSO"
+ansi2html\.sh \fIhttp://code\.google\.com/p/wrdese/source/browse/trunk/b/ansi2html\.sh?r=5\fR, HTML::FromANSI \fIhttp://cpansearch\.perl\.org/src/NUFFIN/HTML\-FromANSI\-2\.03/lib/HTML/FromANSI\.pm\fR
