@@ -1,5 +1,6 @@
 require 'rack'
 require 'bcat/reader'
+require 'bcat/ansi'
 require 'bcat/html'
 require 'bcat/kidgloves'
 require 'bcat/browser'
@@ -18,6 +19,7 @@ class Bcat
     @filter = @reader
     @filter = TeeFilter.new(@filter) if @config[:tee]
     @filter = TextFilter.new(@filter) if @format == 'text'
+    @filter = ANSI.new(@filter) if @format == 'text' || @config[:ansi]
   end
 
   def [](key)

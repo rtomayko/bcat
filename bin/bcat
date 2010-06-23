@@ -1,13 +1,14 @@
 #!/usr/bin/env ruby
-#/ Usage: bcat [-b <browser>] [-ht] [-m <module>] [-T <title>] [<file>]...
+#/ Usage: bcat [-ht] [-a] [-b <browser>] [-T <title>] [<file>]...
 #/        btee <options> [<file>]...
 #/ Pipe to browser utility. Read standard input, possibly one or more <file>s,
 #/ and write concatenated / formatted output to browser. When invoked as btee,
 #/ also write all input back to standard output.
 #/
-#/ Browser options:
+#/ Display options:
 #/   -b, --browser=<browser>    open <browser> instead of system default browser
 #/   -T, --title=<text>         use <text> as the browser title
+#/   -a, --ansi                 convert ANSI (color) escape sequences to HTML
 #/
 #/ Input format (auto detected by default):
 #/   -h, --html                 input is already HTML encoded, doc or fragment
@@ -18,13 +19,14 @@
 require 'optparse'
 
 options = {
-  :format  => nil,
-  :title   => Dir.pwd,
   :Host    => '127.0.0.1',
   :Port    => 8091,
+  :format  => nil,
+  :title   => Dir.pwd,
+  :browser => (ENV['BCAT_BROWSER'].to_s.size > 0 ? ENV['BCAT_BROWSER'] : 'default'),
+  :ansi    => false,
   :debug   => false,
-  :tee     => !!($0 =~ /tee$/),
-  :browser => (ENV['BCAT_BROWSER'].to_s.size > 0 ? ENV['BCAT_BROWSER'] : 'default')
+  :tee     => !!($0 =~ /tee$/)
 }
 
 (class <<self;self;end).send(:define_method, :notice) { |message|
@@ -35,6 +37,7 @@ ARGV.options do |argv|
   argv.on('-t', '--text')      { options[:format] = 'text' }
   argv.on('-b', '--browser=v') { |app|  options[:browser] = app }
   argv.on('-T', '--title=v')   { |text| options[:title] = text }
+  argv.on('-a', '--ansi')      { options[:ansi] = true }
   argv.on('-d', '--debug')     { options[:debug] = true }
   argv.on_tail('--help')       { exec "grep ^#/ <#{__FILE__} | cut -c4-" }
   argv.parse!
