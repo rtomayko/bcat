@@ -30,6 +30,12 @@ display:
     Use <text> as the page `<title>`. By default, the path to the current working
     directory is used as the title.
 
+  * `-a`, `--ansi`:
+    Turns on VT100/ANSI escape sequence conversion. This causes all input to be
+    piped through a2h(1), replacing ANSI escape sequences with HTML for things
+    like bold, underline, and colors. On by default when the input is text; use
+    the `-a` option to turn it on when the input is HTML.
+
 By default, `bcat` attempts to detect whether input is HTML or plain text using
 a simple heuristic, but you can force input to be treated as one or the other
 with these options:
