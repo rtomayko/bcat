@@ -3,8 +3,8 @@ Gem::Specification.new do |s|
   s.version = '0.4.0'
   s.date = '2010-06-23'
 
-  s.summary     = "browser cat"
-  s.description =
+  s.description = "pipe to browser utility"
+  s.summary =
     "Concatenate input from standard input, or one or more files, " +
     "and write progressive output to a browser."
 
