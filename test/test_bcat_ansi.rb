@@ -88,4 +88,10 @@ class ANSITest < Test::Unit::TestCase
       "bold, underline, and red</span></u></b>, normal"
     assert_equal expect, Bcat::ANSI.new(text).to_html
   end
+
+  test "eating malformed sequences" do
+    text = "\x1b[25oops forgot the 'm'"
+    expect = "oops forgot the 'm'"
+    assert_equal expect, Bcat::ANSI.new(text).to_html
+  end
 end

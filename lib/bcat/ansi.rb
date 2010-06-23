@@ -147,6 +147,9 @@ class Bcat
           each { |code| yield :display, code.to_i };
           '' }],
 
+        # malformed sequences
+        [/\A\x1b\[?[\d;]{0,3}/, lambda { |m| '' }],
+
         # real text
         [/\A([^\x1b\x08]+)/m, lambda { |m| yield :text, m; '' }]
       ]
