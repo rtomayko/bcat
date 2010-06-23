@@ -28,6 +28,10 @@ The following escape sequences are supported:
     Foreground color.
   * `<ESC>[40-47m`=`<span style='background-color:`<color>`>`:
     Background color.
+  * `<ESC>[90-97m`=`<span style='color:`<color>`>`:
+    Light foreground colors.
+  * `<ESC>[100-107m`=`<span style='background-color:`<color>`>`:
+    Light background color.
 
 ## SEE ALSO
 

@@ -29,11 +29,29 @@ class ANSITest < Test::Unit::TestCase
     assert_equal expect, Bcat::ANSI.new(text).to_html
   end
 
+  test "light foreground colors" do
+    text = "colors: \x1b[90mblack\x1b[97mwhite"
+    expect = "colors: " +
+      "<span style='color:#555'>black" +
+      "<span style='color:#FFF'>white" +
+      "</span></span>"
+    assert_equal expect, Bcat::ANSI.new(text).to_html
+  end
+
   test "background colors" do
     text = "colors: \x1b[40mblack\x1b[47mwhite"
     expect = "colors: " +
       "<span style='background-color:#000'>black" +
       "<span style='background-color:#AAA'>white" +
+      "</span></span>"
+    assert_equal expect, Bcat::ANSI.new(text).to_html
+  end
+
+  test "light background colors" do
+    text = "colors: \x1b[100mblack\x1b[107mwhite"
+    expect = "colors: " +
+      "<span style='background-color:#555'>black" +
+      "<span style='background-color:#FFF'>white" +
       "</span></span>"
     assert_equal expect, Bcat::ANSI.new(text).to_html
   end
