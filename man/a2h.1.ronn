@@ -1,0 +1,35 @@
+a2h(1) -- convert ANSI/VT100 escape sequences to HTML
+=====================================================
+
+## SYNOPSIS
+
+`a2h` [-] [<file>...]
+
+## DESCRIPTION
+
+The `a2h` utility reads from standard input, or one or more <file>s, and
+converts ANSI/VT100 escape sequences to inline HTML.
+
+## ESCAPE SEQUENCES
+
+The following escape sequences are supported:
+
+  * `<ESC>[0m`:
+    Resets all attributes / closes all HTML tags.
+  * `<ESC>[1m`=`<b>`:
+    Bold.
+  * `<ESC>[4m`=`<u>`:
+    Underscore.
+  * `<ESC>[5m`=`<blink>`:
+    Blink. Really.
+  * `<ESC>[8m`=`<span style='display:none'>`:
+    Hidden.
+  * `<ESC>[30-37m`=`<span style='color:`<color>`>`:
+    Foreground color.
+  * `<ESC>[40-47m`=`<span style='background-color:`<color>`>`:
+    Background color.
+
+## SEE ALSO
+
+[ansi2html.sh](http://code.google.com/p/wrdese/source/browse/trunk/b/ansi2html.sh?r=5),
+[HTML::FromANSI](http://cpansearch.perl.org/src/NUFFIN/HTML-FromANSI-2.03/lib/HTML/FromANSI.pm)

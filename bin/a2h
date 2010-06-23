@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+# Usage: a2h [-] [<file>...]
+# Convert ANSI/VT100 escape sequences to HTML.
+require 'bcat/ansi'
+require 'bcat/reader'
+
+$stdin.sync = true
+$stdout.sync = true
+
+ARGV.push '-' if ARGV.empty?
+
+reader = Bcat::Reader.new(ARGV.to_a)
+filter = Bcat::ANSI.new(reader)
+filter.each { |text| $stdout.write(text) }
