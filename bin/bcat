@@ -1,41 +1,42 @@
 #!/usr/bin/env ruby
-#/ Usage: bcat [-ht] [-m <module>] [-T <title>] [<file>]...
+#/ Usage: bcat [-b <browser>] [-ht] [-m <module>] [-T <title>] [<file>]...
 #/        btee <options> [<file>]...
 #/ Pipe to browser utility. Read standard input, possibly one or more <file>s,
 #/ and write concatenated / formatted output to browser. When invoked as btee,
 #/ also write all input back to standard output.
 #/
+#/ Browser options:
+#/   -b, --browser=<browser>    open <browser> instead of system default browser
+#/   -T, --title=<text>         use <text> as the browser title
+#/
 #/ Input format (auto detected by default):
-#/   -h, --html           input is already HTML encoded, perhaps a whole document
-#/   -t, --text           input is unencoded text
+#/   -h, --html                 input is already HTML encoded, doc or fragment
+#/   -t, --text                 input is unencoded text
 #/
-#/ Tweak output with these options:
-#/   -T, --title=<text>   use <text> as the page title
-#/   -m, --module=<m1>[,<m2>]...
-#/                        inject formatting module(s)
-#/
+#/ Misc options:
 #/   -d, --debug          enable verbose debug logging on stderr
 require 'optparse'
 
 options = {
-  :format => nil,
-  :title  => Dir.pwd,
-  :Host   => '127.0.0.1',
-  :Port   => 8091,
-  :debug  => false,
-  :tee    => !!($0 =~ /tee$/)
+  :format  => nil,
+  :title   => Dir.pwd,
+  :Host    => '127.0.0.1',
+  :Port    => 8091,
+  :debug   => false,
+  :tee     => !!($0 =~ /tee$/),
+  :browser => (ENV['BCAT_BROWSER'].to_s.size > 0 ? ENV['BCAT_BROWSER'] : 'default')
 }
 
 (class <<self;self;end).send(:define_method, :notice) { |message|
   warn "#{File.basename($0)}: #{message}" if options[:debug] }
 
 ARGV.options do |argv|
-  argv.on('-h', '--html')    { options[:format] = 'html' }
-  argv.on('-t', '--text')    { options[:format] = 'text' }
-  argv.on('-a', '--app=v')   { |app|  ENV['BCAT_APPLICATION'] = app }
-  argv.on('-T', '--title=v') { |text| options[:title] = text }
-  argv.on('-d', '--debug')   { options[:debug] = true }
-  argv.on_tail('--help')     { exec "grep ^#/ <#{__FILE__} | cut -c4-" }
+  argv.on('-h', '--html')      { options[:format] = 'html' }
+  argv.on('-t', '--text')      { options[:format] = 'text' }
+  argv.on('-b', '--browser=v') { |app|  options[:browser] = app }
+  argv.on('-T', '--title=v')   { |text| options[:title] = text }
+  argv.on('-d', '--debug')     { options[:debug] = true }
+  argv.on_tail('--help')       { exec "grep ^#/ <#{__FILE__} | cut -c4-" }
   argv.parse!
 end
 ARGV.push '-' if ARGV.empty?
@@ -43,9 +44,9 @@ ARGV.push '-' if ARGV.empty?
 require 'bcat'
 notice "loaded bcat v#{Bcat::VERSION}"
 
-include Bcat::Browser
-notice "env BCAT_APPLICATION=#{ENV['BCAT_APPLICATION'].inspect}"
-notice "env BCAT_COMMAND=#{browser_command.inspect}"
+browser = Bcat::Browser.new(options[:browser])
+notice "env BCAT_BROWSER=#{options[:browser].inspect}"
+notice "env BCAT_COMMAND='#{browser.command}'"
 
 notice "starting server"
 pid = nil
@@ -53,13 +54,13 @@ begin
   bcat = Bcat.new(ARGV, options)
   bcat.serve! do |sock|
     url = "http://#{bcat[:Host]}:#{bcat[:Port]}/#{File.basename(Dir.pwd)}"
-    pid = browser(url)
+    pid = browser.open(url)
   end
 rescue Interrupt
   notice "interrupt"
 end
 
 Process.wait(pid) if pid
-status = $?
-notice "browser exited with #{status}"
+status = $?.exitstatus
+notice "browser [pid: #{pid}] exited with #{status}"
 exit status

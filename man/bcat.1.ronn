@@ -17,6 +17,19 @@ addition to being piped into the browser.
 
 ## OPTIONS
 
+`bcat` opens a simple, undecorated page with the system default web browser and
+immediately begins streaming input. The following options control the browser
+display:
+
+  * `-b`, `--browser`=default|firefox|safari|chrome|opera|<other>
+    The name of the browser application. Defaults to the value of the
+    `BCAT_BROWSER` environment variable, or the system default browser when
+    no `BCAT_BROWSER` is defined.
+
+  * `-T`, `--title`=<text>:
+    Use <text> as the page `<title>`. By default, the path to the current working
+    directory is used as the title.
+
 By default, `bcat` attempts to detect whether input is HTML or plain text using
 a simple heuristic, but you can force input to be treated as one or the other
 with these options:
@@ -32,15 +45,7 @@ with these options:
     document, or it may be an HTML fragment. `bcat` outputs `<html>`, `<head>`,
     and `<body>` elements even if they are not included in the input.
 
-Customization
-
-  * `-T`, `--title`=<text>:
-    Use <text> as the page `<title>`. By default, the path to the current working
-    directory is used as the title.
-
-  * `-a`, `--app`=`Safari`|`Google Chrome`|`Firefox`:
-    MacOS only. The name of the browser application. This can also be set using
-    the `BCAT_APPLICATION` environment variable.
+Miscellaneous options:
 
   * `-d`, `--debug`:
     Turn on verbose debug logging to standard error. Include this output when
@@ -48,14 +53,16 @@ Customization
 
 ## ENVIRONMENT
 
-  * `BCAT_COMMAND`=`open -a $BCAT_APPLICATION $url`:
-  * `BCAT_COMMAND`=`xdg-open "$url"`:
-    The command used to launch to the browser application.
+  * `BCAT_BROWSER`=default|firefox|safari|chrome|opera|<other>:
+    The name of the browser to use by default. `bcat` maps this to an
+    actual browser command based on the current platform. The special
+    value "default" maps to the system default browser.
 
-  * `BCAT_APPLICATION`=[`Safari` | `Google Chrome` | `Firefox`]:
-    MacOS X only. The name of the browser application . This is given as the
-    value of the `-a` argument to open(1). When `BCAT_APPLICATION` is undefined,
-    the system default browser is used.
+  * `BCAT_COMMAND`=<command>:
+    The entire browser command line (to be executed by `/bin/sh`). This
+    overrides the `BCAT_BROWSER` environment variable and makes the `--browser`
+    (`-b`) option a no-op. This should only be necessary when running a
+    browser unknown to bcat or in order to pass special arguments.
 
 ## SEE ALSO
 
