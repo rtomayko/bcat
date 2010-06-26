@@ -3,20 +3,26 @@ bcat
     git clone git://github.com/rtomayko/bcat.git
     gem install bcat
 
-bcat is a pipe to browser utility. It reads from standard input and displays
-what it reads in a web browser:
+bcat is a pipe to browser utility for use at the shell and within editors like
+Vim or Emacs. It reads from standard input, or one or more files, and streams
+output to a browser window:
 
     $ echo "hi mom" |bcat
     $ echo "hi mom" |bcat -t 'Important Message'
+    $ echo "hi mom" |bcat -b chrome
 
-bcat assumes its input is plain text, but you can also pipe in HTML:
+Plain text is converted to simple preformatted HTML with rudimentary support for
+ANSI/VT100 escape sequences (color, background, bold, underline, etc.)
 
-    $ echo "<h1>hi mom</h1>" |bcat -h
-    $ echo "*hi mom*" |markdown |bcat -h
+You can also pipe HTML into bcat, in which case input is written through to the
+browser unmodified:
 
-Browser output is displayed progressively as it's read from standard input,
-making bcat especially useful with build tools and commands like tail(1) that
-generate output over longer periods of time:
+    $ echo "<h1>hi mom</h1>" |bcat
+    $ echo "*hi mom*" |markdown |bcat
+
+Output is displayed progressively as it's being read, making bcat especially
+useful with build tools or even commands like tail(1) that generate output over
+longer periods of time:
 
     $ make all  |bcat
     $ rake test |bcat
@@ -25,15 +31,16 @@ generate output over longer periods of time:
 
 See the bcat(1) manual for detailed command usage.
 
-bcat is known to work under MacOS X, Linux, and FreeBSD (other UNIX-like
-environments with freedesktop.org integration should work fine too). Progressive
-output has been tested under Safari, Firefox, Chrome, and GNOME Epiphany.
-
-See the INSTALLING, COPYING, and CONTRIBUTING files for information on those
-things.
-
-bcat was inspired by the HTML output capabilities included in TextMate
-and a desire to have those capabilities from the shell and within editors
-like Vim.
+bcat was inspired by TextMate's HTML output capabilities and a desire to have
+them at the shell and also within editors like Vim or Emacs. See:
   <http://manual.macromates.com/en/commands#html_output>
   <http://blog.macromates.com/2005/html-output-for-commands/>
+
+Only a small portion of TextMate's HTML output features are currently supported,
+although more will be added in the future (like hyperlinking file:line
+references and injecting CSS/JavaScript).
+
+See the INSTALLING, COPYING, and CONTRIBUTING files for more information on
+those things.
+
+Copyright (c) 2010 by Ryan Tomayko <http://tomayko.com/about>

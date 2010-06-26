@@ -1,4 +1,9 @@
-bcat is usually installed with rubygems:
+bcat is known to work under MacOS X, Linux, and FreeBSD (other UNIX-like
+environments with freedesktop.org integration should work fine too). Progressive
+output has been tested under Safari, Firefox, Chrome, and GNOME Epiphany.
+
+bcat is written in Ruby and requires a basic Ruby installation. Install bcat
+using the gem command:
 
     $ gem install bcat
 
