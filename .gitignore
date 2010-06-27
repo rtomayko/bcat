@@ -6,3 +6,16 @@ a2h.1
 a2h.1.html
 bcat-modules.7
 bcat-modules.7.html
+
+.DS_Store
+*.swp
+*~.nib
+
+build/
+
+*.pbxuser
+*.perspective
+*.perspectivev3
+
+*.mode1v3
+*.mode2v3
