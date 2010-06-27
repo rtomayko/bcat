@@ -37,6 +37,29 @@ task :man do
   sh "ronn -stoc -w -r5 man/*.ronn"
 end
 
+desc 'Publish to github pages'
+task :pages => :man do
+  puts '----------------------------------------------'
+  puts 'Rebuilding pages ...'
+  verbose(false) {
+    rm_rf 'pages'
+    push_url = `git remote show origin`.grep(/Push.*URL/).first[/git@.*/]
+    sh "
+      set -e
+      git fetch -q origin
+      rev=$(git rev-parse origin/gh-pages)
+      git clone -q -b gh-pages . pages
+      cd pages
+      git reset --hard $rev
+      rm -f *.html
+      cp -rp ../man/*.html ../man/index.* ./
+      git add -u *.html index.*
+      git commit -m 'rebuild manual'
+      git push #{push_url} gh-pages
+    ", :verbose => false
+  }
+end
+
 file 'bcat.gemspec' => FileList['{lib,test,bin}/**','Rakefile'] do |f|
   # read spec file and split out manifest section
   spec = File.read(f.name)
