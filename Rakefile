@@ -34,7 +34,7 @@ desc 'Build the manual'
 task :man do
   ENV['RONN_MANUAL']  = "Bcat #{source_version}"
   ENV['RONN_ORGANIZATION'] = "Ryan Tomayko"
-  sh "ronn -w -r5 man/*.ronn"
+  sh "ronn -stoc -w -r5 man/*.ronn"
 end
 
 file 'bcat.gemspec' => FileList['{lib,test,bin}/**','Rakefile'] do |f|
