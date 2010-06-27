@@ -21,7 +21,7 @@ addition to being piped into the browser.
 immediately begins streaming input. The following options control the browser
 display:
 
-  * `-b`, `--browser`=default|firefox|safari|chrome|opera|<other>
+  * `-b`, `--browser`=default|firefox|safari|chrome|opera|<other>:
     The name of the browser application. Defaults to the value of the
     `BCAT_BROWSER` environment variable, or the system default browser when
     no `BCAT_BROWSER` is defined.
@@ -69,6 +69,70 @@ Miscellaneous options:
     overrides the `BCAT_BROWSER` environment variable and makes the `--browser`
     (`-b`) option a no-op. This should only be necessary when running a
     browser unknown to bcat or in order to pass special arguments.
+
+## EXAMPLES
+
+### Basic Shell Examples
+
+With build tools:
+
+    make test |bcat
+    rake test |bcat
+
+As a clipboard viewer:
+
+    pbpaste |bcat
+
+For previewing HTML:
+
+    markdown README.md |bcat
+    redcloth README.textile |bcat
+    erb -T - template.erb |bcat
+    mustache < template.mustache |bcat
+    pygmentize -Ofull,style=colorful -f html main.c |bcat
+
+As a simple man pager:
+
+    export MANPAGER='col -b |bcat'
+    man grep
+
+With git, selectively:
+
+    git log -p --color |bcat
+    git diff --color HEAD@{5d} HEAD |bcat
+
+With git, as the default PAGER:
+
+    export GIT_PAGER=bcat
+
+    git log -p
+    git diff HEAD@{5d} HEAD
+
+As a log viewer:
+
+    tail -n 1000 -f log/development.log |bcat
+
+Or, a remote log viewer:
+
+    ssh example.org 'tail -n 1000 -f /var/log/syslog' |bcat
+
+### Vim and vi Examples
+
+Preview current buffer as HTML:
+
+    :!markdown % |bcat
+    :!ronn -5 --pipe % |bcat
+
+Create keymappings:
+
+    map ,pm :!markdown % |bcat
+    map ,pp :!pygmentize -Ofull,style=colorful -f html % |bcat
+
+Use with `makeprg`:
+
+    set makeprg=make\ \\\|bcat
+    set makeprg=markdown\ %\ \\\|bcat
+    set makeprg=testrb\ %\ \\\|bcat
 
 ## SEE ALSO
 

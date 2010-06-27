@@ -21,16 +21,17 @@ When invoked as \fBbtee\fR, all input is written immediately to standard output 
 .SH "OPTIONS"
 \fBbcat\fR opens a simple, undecorated page with the system default web browser and immediately begins streaming input\. The following options control the browser display:
 .
-.IP "\(bu" 4
-\fB\-b\fR, \fB\-\-browser\fR=default|firefox|safari|chrome|opera|\fIother\fR The name of the browser application\. Defaults to the value of the \fBBCAT_BROWSER\fR environment variable, or the system default browser when no \fBBCAT_BROWSER\fR is defined\.
+.TP
+\fB\-b\fR, \fB\-\-browser\fR=default|firefox|safari|chrome|opera|\fIother\fR
+The name of the browser application\. Defaults to the value of the \fBBCAT_BROWSER\fR environment variable, or the system default browser when no \fBBCAT_BROWSER\fR is defined\.
 .
-.IP "\(bu" 4
-\fB\-T\fR, \fB\-\-title\fR=\fItext\fR: Use \fItext\fR as the page \fB<title>\fR\. By default, the path to the current working directory is used as the title\.
+.TP
+\fB\-T\fR, \fB\-\-title\fR=\fItext\fR
+Use \fItext\fR as the page \fB<title>\fR\. By default, the path to the current working directory is used as the title\.
 .
-.IP "\(bu" 4
-\fB\-a\fR, \fB\-\-ansi\fR: Turns on VT100/ANSI escape sequence conversion\. This causes all input to be piped through a2h(1), replacing ANSI escape sequences with HTML for things like bold, underline, and colors\. On by default when the input is text; use the \fB\-a\fR option to turn it on when the input is HTML\.
-.
-.IP "" 0
+.TP
+\fB\-a\fR, \fB\-\-ansi\fR
+Turns on VT100/ANSI escape sequence conversion\. This causes all input to be piped through a2h(1), replacing ANSI escape sequences with HTML for things like bold, underline, and colors\. On by default when the input is text; use the \fB\-a\fR option to turn it on when the input is HTML\.
 .
 .P
 By default, \fBbcat\fR attempts to detect whether input is HTML or plain text using a simple heuristic, but you can force input to be treated as one or the other with these options:
@@ -59,6 +60,165 @@ The name of the browser to use by default\. \fBbcat\fR maps this to an actual br
 .TP
 \fBBCAT_COMMAND\fR=\fIcommand\fR
 The entire browser command line (to be executed by \fB/bin/sh\fR)\. This overrides the \fBBCAT_BROWSER\fR environment variable and makes the \fB\-\-browser\fR (\fB\-b\fR) option a no\-op\. This should only be necessary when running a browser unknown to bcat or in order to pass special arguments\.
+.
+.SH "EXAMPLES"
+.
+.SS "Basic Shell Examples"
+With build tools:
+.
+.IP "" 4
+.
+.nf
+
+make test |bcat
+rake test |bcat
+.
+.fi
+.
+.IP "" 0
+.
+.P
+As a clipboard viewer:
+.
+.IP "" 4
+.
+.nf
+
+pbpaste |bcat
+.
+.fi
+.
+.IP "" 0
+.
+.P
+For previewing HTML:
+.
+.IP "" 4
+.
+.nf
+
+markdown README\.md |bcat
+redcloth README\.textile |bcat
+erb \-T \- template\.erb |bcat
+mustache < template\.mustache |bcat
+pygmentize \-Ofull,style=colorful \-f html main\.c |bcat
+.
+.fi
+.
+.IP "" 0
+.
+.P
+As a simple man pager:
+.
+.IP "" 4
+.
+.nf
+
+export MANPAGER=\'col \-b |bcat\'
+man grep
+.
+.fi
+.
+.IP "" 0
+.
+.P
+With git, selectively:
+.
+.IP "" 4
+.
+.nf
+
+git log \-p \-\-color |bcat
+git diff \-\-color HEAD@{5d} HEAD |bcat
+.
+.fi
+.
+.IP "" 0
+.
+.P
+With git, as the default PAGER:
+.
+.IP "" 4
+.
+.nf
+
+export GIT_PAGER=bcat
+
+git log \-p
+git diff HEAD@{5d} HEAD
+.
+.fi
+.
+.IP "" 0
+.
+.P
+As a log viewer:
+.
+.IP "" 4
+.
+.nf
+
+tail \-n 1000 \-f log/development\.log |bcat
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Or, a remote log viewer:
+.
+.IP "" 4
+.
+.nf
+
+ssh example\.org \'tail \-n 1000 \-f /var/log/syslog\' |bcat
+.
+.fi
+.
+.IP "" 0
+.
+.SS "Vim and vi Examples"
+Preview current buffer as HTML:
+.
+.IP "" 4
+.
+.nf
+
+:!markdown % |bcat
+:!ronn \-5 \-\-pipe % |bcat
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Create keymappings:
+.
+.IP "" 4
+.
+.nf
+
+map ,pm :!markdown % |bcat
+map ,pp :!pygmentize \-Ofull,style=colorful \-f html % |bcat
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Use with \fBmakeprg\fR:
+.
+.IP "" 4
+.
+.nf
+
+set makeprg=make\e \e\e\e|bcat
+set makeprg=markdown\e %\e \e\e\e|bcat
+set makeprg=testrb\e %\e \e\e\e|bcat
+.
+.fi
+.
+.IP "" 0
 .
 .SH "SEE ALSO"
 cat(1), tee(1), open(1)
