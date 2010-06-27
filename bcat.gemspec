@@ -47,7 +47,7 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = %w[COPYING]
 
   s.has_rdoc = true
-  s.homepage = "http://github.com/rtomayko/bcat/"
+  s.homepage = "http://rtomayko.github.com/bcat/"
   s.rdoc_options = ["--line-numbers", "--inline-source"]
   s.require_paths = %w[lib]
 end
