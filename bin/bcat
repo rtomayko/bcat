@@ -39,6 +39,8 @@ ARGV.options do |argv|
   argv.on('-T', '--title=v')   { |text| options[:title] = text }
   argv.on('-a', '--ansi')      { options[:ansi] = true }
   argv.on('-d', '--debug')     { options[:debug] = true }
+  argv.on('--host=v')          { |addr| options[:Host] = addr }
+  argv.on('--port=v')          { |port| options[:Port] = port.to_i }
   argv.on_tail('--help')       { exec "grep ^#/ <#{__FILE__} | cut -c4-" }
   argv.parse!
 end
