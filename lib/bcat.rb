@@ -14,12 +14,7 @@ class Bcat
   def initialize(files=[], config={})
     @config = {:Host => '127.0.0.1', :Port => 8091}.merge(config)
     @reader = Bcat::Reader.new(files)
-    @format = @config[:format] || @reader.sniff
-
-    @filter = @reader
-    @filter = TeeFilter.new(@filter) if @config[:tee]
-    @filter = TextFilter.new(@filter) if @format == 'text'
-    @filter = ANSI.new(@filter) if @format == 'text' || @config[:ansi]
+    @format = @config[:format]
   end
 
   def [](key)
@@ -43,7 +38,18 @@ class Bcat
     [200, {"Content-Type" => "text/html;charset=utf-8"}, self]
   end
 
+  def assemble
+    @format = @reader.sniff if @format.nil?
+
+    @filter = @reader
+    @filter = TeeFilter.new(@filter) if @config[:tee]
+    @filter = TextFilter.new(@filter) if @format == 'text'
+    @filter = ANSI.new(@filter) if @format == 'text' || @config[:ansi]
+  end
+
   def each
+    assemble
+
     head_parser = Bcat::HeadParser.new
 
     @filter.each do |buf|
