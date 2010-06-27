@@ -20,7 +20,7 @@ require 'optparse'
 
 options = {
   :Host    => '127.0.0.1',
-  :Port    => 8091,
+  :Port    => 0,
   :format  => nil,
   :title   => Dir.pwd,
   :browser => (ENV['BCAT_BROWSER'].to_s.size > 0 ? ENV['BCAT_BROWSER'] : 'default'),
@@ -56,7 +56,8 @@ pid = nil
 begin
   bcat = Bcat.new(ARGV, options)
   bcat.serve! do |sock|
-    url = "http://#{bcat[:Host]}:#{bcat[:Port]}/#{File.basename(Dir.pwd)}"
+    port = sock.addr[1]
+    url = "http://#{bcat[:Host]}:#{port}/#{File.basename(Dir.pwd)}"
     pid = browser.open(url)
   end
 rescue Interrupt

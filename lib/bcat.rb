@@ -2,7 +2,7 @@ require 'rack'
 require 'bcat/reader'
 require 'bcat/ansi'
 require 'bcat/html'
-require 'bcat/kidgloves'
+require 'bcat/server'
 require 'bcat/browser'
 
 class Bcat
@@ -35,7 +35,7 @@ class Bcat
   end
 
   def serve!(&bk)
-    Rack::Handler::KidGloves.run to_app, @config, &bk
+    Bcat::Server.run to_app, @config, &bk
   end
 
   def call(env)
