@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv='content-type' value='text/html;charset=utf8'>
+  <meta name='generator' value='Ronn/v0.6.42 (http://github.com/rtomayko/ronn/tree/0.6.6-36-gb67d494)'>
+  <title>bcat(1) - browser cat</title>
+  <style type='text/css' media='all'>
+  /* style: man */
+  body#manpage {margin:0}
+  .mp {max-width:100ex;padding:0 9ex 1ex 4ex}
+  .mp p,.mp pre,.mp ul,.mp ol,.mp dl {margin:0 0 20px 0}
+  .mp h2 {margin:10px 0 0 0}
+  .mp > p,.mp > pre,.mp > ul,.mp > ol,.mp > dl {margin-left:8ex}
+  .mp h3 {margin:0 0 0 4ex}
+  .mp dt {margin:0;clear:left}
+  .mp dt.flush {float:left;width:8ex}
+  .mp dd {margin:0 0 0 9ex}
+  .mp h1,.mp h2,.mp h3,.mp h4 {clear:left}
+  .mp pre {margin-bottom:20px}
+  .mp pre+h2,.mp pre+h3 {margin-top:22px}
+  .mp h2+pre,.mp h3+pre {margin-top:5px}
+  .mp img {display:block;margin:auto}
+  .mp h1.man-title {display:none}
+  .mp,.mp code,.mp pre,.mp tt,.mp kbd,.mp samp,.mp h3,.mp h4 {font-family:monospace;font-size:14px;line-height:1.42857142857143}
+  .mp h2 {font-size:16px;line-height:1.25}
+  .mp h1 {font-size:20px;line-height:2}
+  .mp {text-align:justify;background:#fff}
+  .mp,.mp code,.mp pre,.mp pre code,.mp tt,.mp kbd,.mp samp {color:#131211}
+  .mp h1,.mp h2,.mp h3,.mp h4 {color:#030201}
+  .mp u {text-decoration:underline}
+  .mp code,.mp strong,.mp b {font-weight:bold;color:#131211}
+  .mp em,.mp var {font-style:italic;color:#232221;text-decoration:none}
+  .mp a,.mp a:link,.mp a:hover,.mp a code,.mp a pre,.mp a tt,.mp a kbd,.mp a samp {color:#0000ff}
+  .mp b.man-ref {font-weight:normal;color:#434241}
+  .mp pre {padding:0 4ex}
+  .mp pre code {font-weight:normal;color:#434241}
+  .mp h2+pre,h3+pre {padding-left:0}
+  ol.man-decor,ol.man-decor li {margin:3px 0 10px 0;padding:0;float:left;width:33%;list-style-type:none;text-transform:uppercase;color:#999;letter-spacing:1px}
+  ol.man-decor {width:100%}
+  ol.man-decor li.tl {text-align:left}
+  ol.man-decor li.tc {text-align:center;letter-spacing:4px}
+  ol.man-decor li.tr {text-align:right;float:right}
+  </style>
+  <style type='text/css' media='all'>
+  /* style: toc */
+  .man-navigation {display:block !important;position:fixed;top:0;left:113ex;height:100%;width:100%;padding:48px 0 0 0;border-left:1px solid #dbdbdb;background:#eee}
+  .man-navigation a,.man-navigation a:hover,.man-navigation a:link,.man-navigation a:visited {display:block;margin:0;padding:5px 2px 5px 30px;color:#999;text-decoration:none}
+  .man-navigation a:hover {color:#111;text-decoration:underline}
+  </style>
+</head>
+<!--
+  The following styles are deprecated and will be removed at some point:
+  div#man, div#man ol.man, div#man ol.head, div#man ol.man.
+
+  The .man-page, .man-decor, .man-head, .man-foot, .man-title, and
+  .man-navigation should be used instead.
+-->
+<body id='manpage'>
+  <div class='mp' id='man'>
+
+  <div class='man-navigation' style='display:none'>
+    <a href="#NAME">NAME</a>
+    <a href="#SYNOPSIS">SYNOPSIS</a>
+    <a href="#DESCRIPTION">DESCRIPTION</a>
+    <a href="#OPTIONS">OPTIONS</a>
+    <a href="#ENVIRONMENT">ENVIRONMENT</a>
+    <a href="#EXAMPLES">EXAMPLES</a>
+    <a href="#SEE-ALSO">SEE ALSO</a>
+    </div>
+
+  <ol class='man-decor man-head man head'>
+    <li class='tl'>bcat(1)</li>
+    <li class='tc'>Bcat 0.4.0</li>
+    <li class='tr'>bcat(1)</li>
+  </ol>
+
+  <h2 id="NAME">NAME</h2>
+<p class="man-name">
+  <code>bcat</code> - <span class="man-whatis">browser cat</span>
+</p>
+
+<h2 id="SYNOPSIS">SYNOPSIS</h2>
+
+<p><code>bcat</code> [-htad] [<var>file</var>...]<br />
+<code>btee</code> [-htad] [<var>file</var>...]</p>
+
+<h2 id="DESCRIPTION">DESCRIPTION</h2>
+
+<p>The <code>bcat</code> utility reads from standard input, or one or more <var>file</var>s, and pipes
+output into a web browser. <var>file</var> may be '-', in which case standard input is
+concatenated at that position.</p>
+
+<p>When invoked as <code>btee</code>, all input is written immediately to standard output in
+addition to being piped into the browser.</p>
+
+<h2 id="OPTIONS">OPTIONS</h2>
+
+<p><code>bcat</code> opens a simple, undecorated page with the system default web browser and
+immediately begins streaming input. The following options control the browser
+display:</p>
+
+<dl>
+<dt><code>-b</code>, <code>--browser</code>=default|firefox|safari|chrome|opera|<var>other</var></dt><dd><p>The name of the browser application. Defaults to the value of the
+<code>BCAT_BROWSER</code> environment variable, or the system default browser when
+no <code>BCAT_BROWSER</code> is defined.</p></dd>
+<dt><code>-T</code>, <code>--title</code>=<var>text</var></dt><dd><p>Use <var>text</var> as the page <code>&lt;title&gt;</code>. By default, the path to the current working
+directory is used as the title.</p></dd>
+<dt><code>-a</code>, <code>--ansi</code></dt><dd><p>Turns on VT100/ANSI escape sequence conversion. This causes all input to be
+piped through <a href="a2h.1.html" class="man-ref">a2h<span class="s">(1)</span></a>, replacing ANSI escape sequences with HTML for things
+like bold, underline, and colors. On by default when the input is text; use
+the <code>-a</code> option to turn it on when the input is HTML.</p></dd>
+</dl>
+
+
+<p>By default, <code>bcat</code> attempts to detect whether input is HTML or plain text using
+a simple heuristic, but you can force input to be treated as one or the other
+with these options:</p>
+
+<dl>
+<dt><code>-t</code>, <code>--text</code></dt><dd><p>The input is non-HTML encoded text. All bare <code>&lt;</code> and <code>&amp;</code> characters are
+entity encoded, end-of-line characters are converted to <code>&lt;br></code>, and the
+entire output is wrapped in a <code>&lt;pre&gt;</code>.</p></dd>
+<dt><code>-h</code>, <code>--html</code></dt><dd><p>The input is already HTML encoded. Under this mode, bcat passes input
+through to the browser mostly unmodified. The input may be a full HTML
+document, or it may be an HTML fragment. <code>bcat</code> outputs <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code>,
+and <code>&lt;body&gt;</code> elements even if they are not included in the input.</p></dd>
+</dl>
+
+
+<p>Miscellaneous options:</p>
+
+<dl>
+<dt><code>-d</code>, <code>--debug</code></dt><dd>Turn on verbose debug logging to standard error. Include this output when
+reporting defects if applicable.</dd>
+</dl>
+
+
+<h2 id="ENVIRONMENT">ENVIRONMENT</h2>
+
+<dl>
+<dt><code>BCAT_BROWSER</code>=default|firefox|safari|chrome|opera|<var>other</var></dt><dd><p>The name of the browser to use by default. <code>bcat</code> maps this to an
+actual browser command based on the current platform. The special
+value "default" maps to the system default browser.</p></dd>
+<dt><code>BCAT_COMMAND</code>=<var>command</var></dt><dd><p>The entire browser command line (to be executed by <code>/bin/sh</code>). This
+overrides the <code>BCAT_BROWSER</code> environment variable and makes the <code>--browser</code>
+(<code>-b</code>) option a no-op. This should only be necessary when running a
+browser unknown to bcat or in order to pass special arguments.</p></dd>
+</dl>
+
+
+<h2 id="EXAMPLES">EXAMPLES</h2>
+
+<h3 id="Basic-Shell-Examples">Basic Shell Examples</h3>
+
+<p>With build tools:</p>
+
+<pre><code>make test |bcat
+rake test |bcat
+</code></pre>
+
+<p>As a clipboard viewer:</p>
+
+<pre><code>pbpaste |bcat
+</code></pre>
+
+<p>For previewing HTML:</p>
+
+<pre><code>markdown README.md |bcat
+redcloth README.textile |bcat
+erb -T - template.erb |bcat
+mustache &lt; template.mustache |bcat
+pygmentize -Ofull,style=colorful -f html main.c |bcat
+</code></pre>
+
+<p>As a simple man pager:</p>
+
+<pre><code>export MANPAGER='col -b |bcat'
+man grep
+</code></pre>
+
+<p>With git, selectively:</p>
+
+<pre><code>git log -p --color |bcat
+git diff --color HEAD@{5d} HEAD |bcat
+</code></pre>
+
+<p>With git, as the default PAGER:</p>
+
+<pre><code>export GIT_PAGER=bcat
+
+git log -p
+git diff HEAD@{5d} HEAD
+</code></pre>
+
+<p>As a log viewer:</p>
+
+<pre><code>tail -n 1000 -f log/development.log |bcat
+tail -f $RAILS_ROOT/log/development.log
+</code></pre>
+
+<p>Or, a remote log viewer:</p>
+
+<pre><code>ssh example.org 'tail -n 1000 -f /var/log/syslog' |bcat
+</code></pre>
+
+<h3 id="Vim-and-vi-Examples">Vim and vi Examples</h3>
+
+<p>Preview current buffer as HTML:</p>
+
+<pre><code>:!markdown % |bcat
+:!ronn -5 --pipe % |bcat
+</code></pre>
+
+<p>Create keymappings:</p>
+
+<pre><code>map ,pm :!markdown % |bcat
+map ,pp :!pygmentize -Ofull,style=colorful -f html % |bcat
+</code></pre>
+
+<p>Use with <code>makeprg</code>:</p>
+
+<pre><code>set makeprg=make\ \\\|bcat
+set makeprg=markdown\ %\ \\\|bcat
+set makeprg=testrb\ %\ \\\|bcat
+</code></pre>
+
+<h2 id="SEE-ALSO">SEE ALSO</h2>
+
+<p><span class="man-ref">cat<span class="s">(1)</span></span>, <span class="man-ref">tee<span class="s">(1)</span></span>, <span class="man-ref">open<span class="s">(1)</span></span></p>
+
+
+  <ol class='man-decor man-foot man foot'>
+    <li class='tl'>Ryan Tomayko</li>
+    <li class='tc'>June 2010</li>
+    <li class='tr'>bcat(1)</li>
+  </ol>
+
+  </div>
+</body>
+</html>
