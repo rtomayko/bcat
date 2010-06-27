@@ -93,6 +93,12 @@ class ANSITest < Test::Unit::TestCase
     assert_equal expect, Bcat::ANSI.new(text).to_html
   end
 
+  test "resetting without an implicit 0 argument" do
+    text = "\x1b[1mthis is bold\x1b[m, but this isn't"
+    expect = "<b>this is bold</b>, but this isn't"
+    assert_equal expect, Bcat::ANSI.new(text).to_html
+  end
+
   test "multi-attribute sequences" do
     text = "normal, \x1b[1;3;31mbold, underline, and red\x1b[0m, normal"
     expect = "normal, <b><u><span style='color:#A00'>" +

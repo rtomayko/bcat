@@ -144,7 +144,8 @@ class Bcat
         [/\A\x08+/, lambda { |m| '' }],
 
         # ansi escape sequences that mess with the display
-        [/\A\x1b\[((?:\d{1,3};?)+)m/, lambda { |m|
+        [/\A\x1b\[((?:\d{1,3};?)+|)m/, lambda { |m|
+          m = '0' if m.strip.empty?
           m.chomp(';').split(';').
           each { |code| yield :display, code.to_i };
           '' }],
