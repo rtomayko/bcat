@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>bcat -- pipe to browser utility</title>
+  <style>
+    body {
+      font-size:26px;
+      line-height:1.5;
+      color:#333;
+    }
+    div#index {
+      width:28em;
+      margin:0 auto;
+    }
+    h1,h2,h3,body { font-family:'gill sans',verdana,sans-serif; }
+    tt, .aux, .man-ref, pre, h1 { font-family:'deja vu sans',menlo,monospace; }
+
+    h1 {
+      font-weight:bold;
+      font-size:80px;
+      letter-spacing:-10px;
+      color:#000;
+      margin-bottom:0;
+    }
+    h3 {
+      font-weight:normal;
+      color:#777;
+      margin-top:-20px;
+      margin-bottom:40px;
+      letter-spacing:2px;
+    }
+    h4 {
+      font-size:28px;
+      color:#111;
+      margin-bottom:0;
+    }
+    h4+p, h4+dl { margin-top:10px }
+    pre {
+      margin-left:50px;
+      color:#666;
+    }
+    tt,code { font-size:0.75em; }
+    .aux     { font-size:20px;letter-spacing:1px; }
+    .also    { font-size:20px }
+    .copy    {
+      font-size:18px;
+      text-align:right;
+      color:#777;
+      margin-top:50px;
+      padding-top:5px;
+      border-top:1px solid #aaa;
+    }
+    .man-ref { letter-spacing:-1px; }
+  </style>
+</head>
+<body>
+<div id='index'>
+  <h1>bcat</h1>
+  <h3>pipe to browser utility</h3>
+
+  <p class='aux'>
+    <a href='http://github.com/rtomayko/bcat#readme'>README</a>,
+    <a href='http://github.com/rtomayko/bcat/blob/master/INSTALLING#files'>INSTALLING</a>,
+    <a href='http://github.com/rtomayko/bcat/blob/master/COPYING#files'>COPYING</a>,
+    <a href='http://github.com/rtomayko/bcat/blob/master/CONTRIBUTING#files'>CONTRIBUTING</a>
+  </p>
+
+  <h4>Manuals</h4>
+  <dl>
+    <dt>
+      <a class='man-ref' href='bcat.1.html'>bcat(1)</a>,
+      <a class='man-ref' href='btee.1.html'>btee(1)</a>
+    </dt>
+    <dd>browser <tt>cat</tt> and browser <tt>tee</tt>.</dd>
+
+    <dt><a class='man-ref' href='a2h.1.html'>a2h(1)</a></dt>
+    <dd>VT100/ANSI escape sequence to HTML converter.</dd>
+
+    <!--
+    <dt><a class='man-ref' href='bcat-modules.7.html'>bcat-modules(7)</a></dt>
+    <dd>decorate bcat output with javascript and css</dd>
+    -->
+  </dl>
+
+  <h4>Examples</h4>
+  <p>With build tools:</p>
+
+  <pre><code>make test |bcat
+rake test |bcat
+</code></pre>
+
+<p>As a clipboard viewer:</p>
+
+<pre><code>pbpaste |bcat
+</code></pre>
+
+<p>For previewing HTML:</p>
+
+<pre><code>markdown README.md |bcat
+redcloth README.textile |bcat
+erb -T - template.erb |bcat
+mustache &lt; template.mustache |bcat
+pygmentize -Ofull,style=colorful -f html main.c |bcat
+</code></pre>
+
+<p>As a simple man pager:</p>
+
+<pre><code>export MANPAGER='col -b |bcat'
+man grep
+</code></pre>
+
+<p>With git, selectively:</p>
+
+<pre><code>git log -p --color |bcat
+git diff --color HEAD@{5d} HEAD |bcat
+</code></pre>
+
+<p>With git, as the default PAGER:</p>
+
+<pre><code>export GIT_PAGER=bcat
+
+git log -p
+git diff HEAD@{5d} HEAD
+</code></pre>
+
+<p>As a log viewer:</p>
+
+<pre><code>tail -n 1000 -f log/development.log |bcat
+tail -f $RAILS_ROOT/log/development.log
+</code></pre>
+
+<p>Or, a remote log viewer:</p>
+
+<pre><code>ssh example.org 'tail -n 1000 -f /var/log/syslog' |bcat
+</code></pre>
+
+<h4>Vim and vi Examples</h4>
+
+<p>Preview current buffer as HTML:</p>
+
+<pre><code>:!markdown % |bcat
+:!ronn -5 --pipe % |bcat
+</code></pre>
+
+<p>Create keymappings:</p>
+
+<pre><code>:map ,pm :!markdown % |bcat
+:map ,pp :!pygmentize -Ofull,style=colorful -f html % |bcat
+</code></pre>
+
+<p>Use with <code>makeprg</code>:</p>
+
+<pre><code>:set makeprg=make\ \\\|bcat
+:set makeprg=markdown\ %\ \\\|bcat
+:set makeprg=testrb\ %\ \\\|bcat
+</code></pre>
+
+  <p class='copy'>
+  Copyright &copy; 2010 <a href="http://tomayko.com/about">Ryan Tomayko</a>
+  </p>
+</div>
+</body>
+</html>
