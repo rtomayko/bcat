@@ -29,7 +29,9 @@ longer periods of time:
     $ tail -f /var/log/syslog |bcat
     $ (while printf .; do sleep 1; done) |bcat
 
-See the bcat(1) manual for detailed command usage.
+See the bcat(1) EXAMPLES section for more on using bcat from the shell or within
+editors like Vim:
+  <http://rtomayko.github.com/bcat/bcat.1.html#EXAMPLES>
 
 bcat was inspired by TextMate's HTML output capabilities and a desire to have
 them at the shell and also within editors like Vim or Emacs. See:
