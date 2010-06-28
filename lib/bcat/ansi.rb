@@ -5,7 +5,7 @@ class Bcat
   # The ANSI module is based on code from the following libraries:
   #
   # ansi2html.sh:
-  #   http://code.google.com/p/wrdese/source/browse/trunk/b/ansi2html.sh?r=5
+  #   http://github.com/pixelb/scripts/blob/master/scripts/ansi2html.sh
   #
   # HTML::FromANSI:
   #   http://cpansearch.perl.org/src/NUFFIN/HTML-FromANSI-2.03/lib/HTML/FromANSI.pm

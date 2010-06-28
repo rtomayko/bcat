@@ -35,5 +35,5 @@ The following escape sequences are supported:
 
 ## SEE ALSO
 
-[ansi2html.sh](http://code.google.com/p/wrdese/source/browse/trunk/b/ansi2html.sh?r=5),
+[ansi2html.sh](http://github.com/pixelb/scripts/blob/master/scripts/ansi2html.sh),
 [HTML::FromANSI](http://cpansearch.perl.org/src/NUFFIN/HTML-FromANSI-2.03/lib/HTML/FromANSI.pm)
