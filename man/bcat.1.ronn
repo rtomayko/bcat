@@ -81,7 +81,8 @@ With build tools:
 
 As a clipboard viewer:
 
-    pbpaste |bcat
+    pbpaste  |bcat  # mac
+    xclip -o |bcat  # X11
 
 For previewing HTML:
 

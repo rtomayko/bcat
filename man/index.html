@@ -4,7 +4,7 @@
   <title>bcat -- pipe to browser utility</title>
   <style>
     body {
-      font-size:26px;
+      font-size:24px;
       line-height:1.5;
       color:#333;
     }
@@ -12,15 +12,20 @@
       width:28em;
       margin:0 auto;
     }
-    h1,h2,h3,body { font-family:'gill sans',verdana,sans-serif; }
-    tt, .aux, .man-ref, pre, h1 { font-family:'deja vu sans',menlo,monospace; }
+    h1,h2,h3,body { font-family:'gill sans','dejavu sans',verdana,sans-serif; }
+    tt,.aux,.man-ref,pre,h1 { font-family:menlo,'dejavu sans mono',monospace; }
 
     h1 {
       font-weight:bold;
       font-size:80px;
-      letter-spacing:-10px;
+      letter-spacing:-5px;
       color:#000;
       margin-bottom:0;
+      position:relative;
+      left:-50px;
+    }
+    h1 b {
+      color:#ccc;
     }
     h3 {
       font-weight:normal;
@@ -30,7 +35,7 @@
       letter-spacing:2px;
     }
     h4 {
-      font-size:28px;
+      font-size:26px;
       color:#111;
       margin-bottom:0;
     }
@@ -40,7 +45,7 @@
       color:#666;
     }
     tt,code { font-size:0.75em; }
-    .aux     { font-size:20px;letter-spacing:1px; }
+    .aux     { font-size:20px;letter-spacing:1px }
     .also    { font-size:20px }
     .copy    {
       font-size:18px;
@@ -55,7 +60,7 @@
 </head>
 <body>
 <div id='index'>
-  <h1>bcat</h1>
+  <h1><b>|</b>bcat</h1>
   <h3>pipe to browser utility</h3>
 
   <p class='aux'>
@@ -91,7 +96,8 @@ rake test |bcat
 
 <p>As a clipboard viewer:</p>
 
-<pre><code>pbpaste |bcat
+<pre><code>pbpaste  |bcat   # macos
+xclip -o |bcat   # X11
 </code></pre>
 
 <p>For previewing HTML:</p>
@@ -118,7 +124,6 @@ git diff --color HEAD@{5d} HEAD |bcat
 <p>With git, as the default PAGER:</p>
 
 <pre><code>export GIT_PAGER=bcat
-
 git log -p
 git diff HEAD@{5d} HEAD
 </code></pre>
@@ -155,8 +160,35 @@ tail -f $RAILS_ROOT/log/development.log
 :set makeprg=testrb\ %\ \\\|bcat
 </code></pre>
 
+  <h4>See Also</h4>
+  <ul>
+    <li>
+      <p>
+        Chris Wanstrath's
+        <a href="http://gist.github.com/318247"><tt>browser</tt></a> program
+        pipes standard input to a browser using a temporary file. It's many fewer
+        lines of code than <tt>bcat</tt>.
+      </p>
+    </li>
+    <li>
+      <p>
+        This excellent
+        <a href="http://blog.macromates.com/2005/html-output-for-commands/">
+          introduction to TextMate's HTML output features</a>
+        can be thought of as a <tt>bcat</tt> feature roadmap. It should one day
+        be possible to do all of those things with <tt>bcat</tt>.
+      </p>
+    </li>
+    <li>
+      <p>
+        <a href="http://www.uzbl.org/">uzbl</a> is a graphical web
+        browser (X11+gtk only) that adheres to the UNIX philosophy.
+      </p>
+    </li>
+  </ul>
+
   <p class='copy'>
-  Copyright &copy; 2010 <a href="http://tomayko.com/about">Ryan Tomayko</a>
+    Copyright &copy; 2010 <a href="http://tomayko.com/about">Ryan Tomayko</a>
   </p>
 </div>
 </body>
