@@ -46,7 +46,7 @@ class Bcat
       command = browser_command
       fork do
         [$stdin, $stdout].each { |fd| fd.close }
-        exec "#{command} #{shell_quote(url)}"
+        exec "#{command} '#{shell_quote(url)}'"
       end
     end
 
