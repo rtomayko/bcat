@@ -111,8 +111,8 @@ With git, as the default PAGER:
 
 As a log viewer:
 
-    tail -n 1000 -f log/development.log |bcat
-    tail -f $RAILS_ROOT/log/development.log
+    tail -n 1000 -f /var/log/messages |bcat
+    tail -f $RAILS_ROOT/log/development.log |bcat
 
 Or, a remote log viewer:
 
