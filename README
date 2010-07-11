@@ -8,7 +8,7 @@ Vim or Emacs. It reads from standard input, or one or more files, and streams
 output to a browser window:
 
     $ echo "hi mom" |bcat
-    $ echo "hi mom" |bcat -t 'Important Message'
+    $ echo "hi mom" |bcat -T 'Important Message'
     $ echo "hi mom" |bcat -b chrome
 
 Plain text is converted to simple preformatted HTML with rudimentary support for
