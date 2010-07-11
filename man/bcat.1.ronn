@@ -127,8 +127,8 @@ Preview current buffer as HTML:
 
 Create keymappings:
 
-    map ,pm :!markdown % |bcat
-    map ,pp :!pygmentize -Ofull,style=colorful -f html % |bcat
+    map ,pm :!markdown % \|bcat
+    map ,pp :!pygmentize -Ofull,style=colorful -f html % \|bcat
 
 Use with `makeprg`:
 
