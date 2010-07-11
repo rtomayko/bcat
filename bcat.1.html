@@ -195,8 +195,8 @@ git diff HEAD@{5d} HEAD
 
 <p>As a log viewer:</p>
 
-<pre><code>tail -n 1000 -f log/development.log |bcat
-tail -f $RAILS_ROOT/log/development.log
+<pre><code>tail -n 1000 -f /var/log/messages |bcat
+tail -f $RAILS_ROOT/log/development.log |bcat
 </code></pre>
 
 <p>Or, a remote log viewer:</p>
@@ -214,8 +214,8 @@ tail -f $RAILS_ROOT/log/development.log
 
 <p>Create keymappings:</p>
 
-<pre><code>map ,pm :!markdown % |bcat
-map ,pp :!pygmentize -Ofull,style=colorful -f html % |bcat
+<pre><code>map ,pm :!markdown % \|bcat
+map ,pp :!pygmentize -Ofull,style=colorful -f html % \|bcat
 </code></pre>
 
 <p>Use with <code>makeprg</code>:</p>
@@ -232,7 +232,7 @@ set makeprg=testrb\ %\ \\\|bcat
 
   <ol class='man-decor man-foot man foot'>
     <li class='tl'>Ryan Tomayko</li>
-    <li class='tc'>June 2010</li>
+    <li class='tc'>July 2010</li>
     <li class='tr'>bcat(1)</li>
   </ol>
 
