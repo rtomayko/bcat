@@ -1,7 +1,7 @@
-.\" generated with Ronn/v0.6.42
-.\" http://github.com/rtomayko/ronn/tree/0.6.6-36-gb67d494
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BCAT" "1" "June 2010" "Ryan Tomayko" "Bcat 0.5.0"
+.TH "BCAT" "1" "July 2010" "Ryan Tomayko" "Bcat 0.5.0"
 .
 .SH "NAME"
 \fBbcat\fR \- browser cat
@@ -55,7 +55,7 @@ Turn on verbose debug logging to standard error\. Include this output when repor
 .
 .TP
 \fBBCAT_BROWSER\fR=default|firefox|safari|chrome|opera|\fIother\fR
-The name of the browser to use by default\. \fBbcat\fR maps this to an actual browser command based on the current platform\. The special value \"default\" maps to the system default browser\.
+The name of the browser to use by default\. \fBbcat\fR maps this to an actual browser command based on the current platform\. The special value "default" maps to the system default browser\.
 .
 .TP
 \fBBCAT_COMMAND\fR=\fIcommand\fR
@@ -159,8 +159,8 @@ As a log viewer:
 .
 .nf
 
-tail \-n 1000 \-f log/development\.log |bcat
-tail \-f $RAILS_ROOT/log/development\.log
+tail \-n 1000 \-f /var/log/messages |bcat
+tail \-f $RAILS_ROOT/log/development\.log |bcat
 .
 .fi
 .
@@ -200,8 +200,8 @@ Create keymappings:
 .
 .nf
 
-map ,pm :!markdown % |bcat
-map ,pp :!pygmentize \-Ofull,style=colorful \-f html % |bcat
+map ,pm :!markdown % \e|bcat
+map ,pp :!pygmentize \-Ofull,style=colorful \-f html % \e|bcat
 .
 .fi
 .

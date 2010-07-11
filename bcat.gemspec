@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name = 'bcat'
-  s.version = '0.5.0'
-  s.date = '2010-06-28'
+  s.version = '0.5.1'
+  s.date = '2010-07-11'
 
   s.description = "pipe to browser utility"
   s.summary =
@@ -35,6 +35,7 @@ Gem::Specification.new do |s|
     man/btee.1
     man/btee.1.ronn
     man/index.html
+    test/contest.rb
     test/test_bcat_a2h.rb
     test/test_bcat_ansi.rb
     test/test_bcat_browser.rb
