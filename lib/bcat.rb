@@ -101,7 +101,7 @@ class Bcat
 
   def close
     notice "closing with interrupt"
-    raise Interrupt
+    raise Interrupt, "connection closed"
   end
 
   def notice(message)
