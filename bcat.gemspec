@@ -44,7 +44,7 @@ Gem::Specification.new do |s|
   # = MANIFEST =
 
   s.default_executable = 'bcat'
-  s.executables = ['bcat']
+  s.executables = ['a2h', 'bcat', 'btee']
 
   s.test_files = s.files.select {|path| path =~ /^test\/.*_test.rb/}
   s.add_dependency 'rack', '< 1.2'
