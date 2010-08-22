@@ -1,0 +1,26 @@
+#!/bin/sh
+# Usage: bman <man-args>
+# Open manual page in browser with bcat.
+#
+# Original zsh version by Nick Stenning <http://github.com/nickstenning>
+# http://github.com/rtomayko/bcat/issues#issue/8
+#
+# Ported to POSIX shell by Ryan Tomayko <http://github.com/rtomayko>
+set -e
+
+# we use normal bold and underline
+BOLD="\033[1m"
+EM="\033[3m"
+RESET="\033[0m"
+
+# pass argv directly over to man
+man "$@" |
+
+# replace ^H based bold and underline with ansi equivelants
+sed "
+    s/_\(.\)/"$(echo "$EM")"\1"$(echo "$RESET")"/g
+    s/\(.\)\1/"$(echo "$BOLD")"\1"$(echo "$RESET")"/g
+"        |
+
+# pipe it into bcat
+bcat
