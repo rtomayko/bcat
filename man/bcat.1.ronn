@@ -136,6 +136,9 @@ Use with `makeprg`:
     set makeprg=markdown\ %\ \\\|bcat
     set makeprg=testrb\ %\ \\\|bcat
 
+(Note that you may need to escape the `%` character with quotes if there's
+spaces in the pathname. For example: `!markdown '%' |bcat`.)
+
 ## SEE ALSO
 
 cat(1), tee(1), open(1)
