@@ -83,6 +83,7 @@ class Bcat
       "<html>",
       "<head>",
       "<!-- bcat was here -->",
+      "<link href=\"data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=\" rel=\"icon\" type=\"image/x-icon\" />",
       "<title>#{self[:title] || 'bcat'}</title>",
       inject.to_s,
       "</head>"
