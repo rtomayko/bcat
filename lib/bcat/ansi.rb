@@ -102,8 +102,8 @@ class Bcat
             when 0        ; yield reset_styles if @stack.any?
             when 1        ; yield push_tag("b") # bright
             when 2        ; #dim
-            when 3        ; yield push_tag("u")
-            when 5        ; yield push_tag("blink")
+            when 3, 4     ; yield push_tag("u")
+            when 5, 6     ; yield push_tag("blink")
             when 7        ; #reverse
             when 8        ; yield push_style("display:none")
             when 9        ; yield push_tag("strike")
