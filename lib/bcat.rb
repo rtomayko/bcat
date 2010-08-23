@@ -57,6 +57,7 @@ class Bcat
         yield buf
       elsif head_parser.feed(buf)
         yield content_for_head(inject=head_parser.head)
+        yield "\n"
         yield head_parser.body
         head_parser = nil
       end
@@ -64,6 +65,7 @@ class Bcat
 
     if head_parser
       yield content_for_head(inject=head_parser.head) +
+            "\n" +
             head_parser.body
     end
 
@@ -91,7 +93,7 @@ class Bcat
   end
 
   def foot
-    "</body></html>"
+    "</body>\n</html>\n"
   end
 
   def escape_js(string)
