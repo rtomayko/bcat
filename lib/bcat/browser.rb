@@ -45,7 +45,7 @@ class Bcat
     def open(url)
       command = browser_command
       fork do
-        [$stdin, $stdout].each { |fd| fd.close }
+        $stdin.close
         exec "#{command} '#{shell_quote(url)}'"
       end
     end
