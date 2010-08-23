@@ -28,7 +28,7 @@ class Bcat
       !@body.nil?
     end
 
-    # Determine if the input is HTML. This nil before the first non-whitespace
+    # Determine if the input is HTML. This is nil before the first non-whitespace
     # character is received, true if the first non-whitespace character is a
     # '<', and false if the first non-whitespace character is something other
     # than '<'.
