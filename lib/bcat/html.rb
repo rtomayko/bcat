@@ -37,7 +37,7 @@ class Bcat
     end
 
     # The head contents without any DOCTYPE, <html>, or <head> tags. This should
-    # consist of only <style>, <script>, <link>, <meta>, and <title> tags.
+    # consist of only <style>, <script>, <link>, <meta>, <base>, and <title> tags.
     def head
       @head.join.gsub(/<\/?(?:html|head|!DOCTYPE).*?>/mi, '')
     end
@@ -59,14 +59,14 @@ class Bcat
       /\A(<title.*?>.*?<\/title>)/mi,
       /\A(<script.*?>.*?<\/script>)/mi,
       /\A(<style.*?>.*?<\/style>)/mi,
-      /\A(<(?:html|head|meta|link).*?>)/mi,
-      /\A(<\/(?:html|head|meta|link|script|style|title)>)/mi,
+      /\A(<(?:html|head|meta|link|base).*?>)/mi,
+      /\A(<\/(?:html|head|meta|link|base|script|style|title)>)/mi,
       /\A(<!--(.*?)-->)/m
     ]
 
     BODY_TOKS = [
       /\A[^<]/,
-      /\A<(?!html|head|meta|link|script|style|title).*?>/
+      /\A<(?!html|head|meta|link|base|script|style|title).*?>/
     ]
 
     # Parses buf into head and body parts. Basic approach is to eat anything
