@@ -39,6 +39,8 @@ class Bcat
   end
 
   def assemble
+    @reader.open
+
     @format = @reader.sniff if @format.nil?
 
     @filter = @reader
@@ -103,8 +105,10 @@ class Bcat
   end
 
   def close
-    notice "closing with interrupt"
-    raise Interrupt, "connection closed"
+    unless @config[:persist]
+      notice "closing with interrupt"
+      raise Interrupt, "connection closed"
+    end
   end
 
   def notice(message)

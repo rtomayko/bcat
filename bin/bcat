@@ -25,6 +25,7 @@ options = {
   :title   => nil,
   :browser => (ENV['BCAT_BROWSER'].to_s.size > 0 ? ENV['BCAT_BROWSER'] : 'default'),
   :ansi    => false,
+  :persist => false,
   :debug   => false,
   :tee     => !!($0 =~ /tee$/)
 }
@@ -38,6 +39,7 @@ ARGV.options do |argv|
   argv.on('-b', '--browser=v') { |app|  options[:browser] = app }
   argv.on('-T', '--title=v')   { |text| options[:title] = text }
   argv.on('-a', '--ansi')      { options[:ansi] = true }
+  argv.on('-p', '--persist')   { options[:persist] = true }
   argv.on('-d', '--debug')     { options[:debug] = true }
   argv.on('--host=v')          { |addr| options[:Host] = addr }
   argv.on('--port=v')          { |port| options[:Port] = port.to_i }

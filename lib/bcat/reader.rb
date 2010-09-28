@@ -9,6 +9,9 @@ class Bcat
 
     def initialize(files=[])
       @files = files
+    end
+
+    def open
       @fds =
         files.map do |f|
           if f == '-'
