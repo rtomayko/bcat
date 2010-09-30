@@ -26,6 +26,7 @@ class Bcat
     def each
       yield @buf.shift while @buf.any?
       while fd = fds.first
+        fds.shift and next if fd.closed?
         fd.sync = true
         begin
           while buf = fd.readpartial(4096)
