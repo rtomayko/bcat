@@ -3,7 +3,7 @@ bcat(1) -- browser cat
 
 ## SYNOPSIS
 
-`bcat` [-htad] [<file>...]<br>
+`bcat` [-htapd] [<file>...]<br>
 `btee` [-htad] [<file>...]
 
 ## DESCRIPTION
@@ -46,12 +46,17 @@ with these options:
     entire output is wrapped in a `<pre>`.
 
   * `-h`, `--html`:
-    The input is already HTML encoded. Under this mode, bcat passes input
+    The input is already HTML encoded. Under this mode, `bcat` passes input
     through to the browser mostly unmodified. The input may be a full HTML
     document, or it may be an HTML fragment. `bcat` outputs `<html>`, `<head>`,
     and `<body>` elements even if they are not included in the input.
 
 Miscellaneous options:
+
+  * `-p`, `--persist`:
+    Have `bcat` serve requests until it is interrupted. Reloading the page
+    in the browser will cause `bcat` to re-read the files. Standard input
+    can only be read once and will produce no content on subsequent requests.
 
   * `-d`, `--debug`:
     Turn on verbose debug logging to standard error. Include this output when
