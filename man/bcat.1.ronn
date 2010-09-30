@@ -4,6 +4,7 @@ bcat(1) -- browser cat
 ## SYNOPSIS
 
 `bcat` [-htapd] [<file>...]<br>
+`bcat` [-htapd] -c <command>...<br>
 `btee` [-htad] [<file>...]
 
 ## DESCRIPTION
@@ -53,10 +54,15 @@ with these options:
 
 Miscellaneous options:
 
+  * `-c`, `--command`:
+    Interpret the remaining options as a command to be run whose output should
+    be piped into the web browser.
+
   * `-p`, `--persist`:
     Have `bcat` serve requests until it is interrupted. Reloading the page
-    in the browser will cause `bcat` to re-read the files. Standard input
-    can only be read once and will produce no content on subsequent requests.
+    in the browser will cause `bcat` to re-read the files (or re-run the command
+    if used with the `--command` option). Standard input can only be read once
+    and will produce no content on subsequent requests.
 
   * `-d`, `--debug`:
     Turn on verbose debug logging to standard error. Include this output when
@@ -96,6 +102,10 @@ For previewing HTML:
     erb -T - template.erb |bcat
     mustache < template.mustache |bcat
     pygmentize -Ofull,style=colorful -f html main.c |bcat
+
+Regenerate the content each time the page is reloaded:
+
+    bcat -pc markdown README.md
 
 As a simple man pager:
 

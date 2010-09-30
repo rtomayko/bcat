@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 #/ Usage: bcat [-htp] [-a] [-b <browser>] [-T <title>] [<file>]...
+#/        bcat [-htp] [-a] [-b <browser>] [-T <title>] -c command...
 #/        btee <options> [<file>]...
 #/ Pipe to browser utility. Read standard input, possibly one or more <file>s,
 #/ and write concatenated / formatted output to browser. When invoked as btee,
@@ -15,7 +16,8 @@
 #/   -t, --text                 input is unencoded text
 #/
 #/ Misc options:
-#/   -p, --persist              serve files until interrupted, allowing reload
+#/   -c, --command              read the standard output of command
+#/   -p, --persist              serve until interrupted, allowing reload
 #/   -d, --debug                enable verbose debug logging on stderr
 require 'optparse'
 
