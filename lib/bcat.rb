@@ -11,9 +11,9 @@ class Bcat
 
   attr_reader :format
 
-  def initialize(files=[], config={})
+  def initialize(args=[], config={})
     @config = {:Host => '127.0.0.1', :Port => 8091}.merge(config)
-    @reader = Bcat::Reader.new(files)
+    @reader = Bcat::Reader.new(@config[:command], args)
     @format = @config[:format]
   end
 

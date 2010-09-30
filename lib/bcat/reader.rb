@@ -4,23 +4,32 @@ class Bcat
   # ARGF style multi-file streaming interface. Input is read with IO#readpartial
   # to avoid buffering.
   class Reader
-    attr_reader :files
+    attr_reader :is_command
+    attr_reader :args
     attr_reader :fds
 
-    def initialize(files=[])
-      @files = files
+    def initialize(is_command, args=[])
+      @is_command = is_command
+      @args = args
     end
 
     def open
-      @fds =
-        files.map do |f|
-          if f == '-'
-            $stdin
-          else
-            File.open(f, 'rb')
-          end
-        end
+      @fds = is_command ? open_command : open_files
       @buf = []
+    end
+
+    def open_command
+      [IO.popen(args.join(' '), 'rb')]
+    end
+
+    def open_files
+      args.map do |f|
+        if f == '-'
+          $stdin
+        else
+          File.open(f, 'rb')
+        end
+      end
     end
 
     def each
