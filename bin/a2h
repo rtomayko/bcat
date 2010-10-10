@@ -9,6 +9,7 @@ $stdout.sync = true
 
 ARGV.push '-' if ARGV.empty?
 
-reader = Bcat::Reader.new(ARGV.to_a)
+reader = Bcat::Reader.new(false, ARGV.to_a)
+reader.open
 filter = Bcat::ANSI.new(reader)
 filter.each { |text| $stdout.write(text) }
