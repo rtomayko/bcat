@@ -43,7 +43,6 @@ class Bcat
     end
 
     def open(url)
-      command = browser_command
       fork do
         $stdin.close
         exec "#{command} '#{shell_quote(url)}'"
