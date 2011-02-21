@@ -45,13 +45,13 @@ class Bcat
     def open(url)
       fork do
         $stdin.close
-        exec "#{command} '#{shell_quote(url)}'"
+        exec "#{command} #{shell_quote(url)}"
+        exit! 128
       end
     end
 
     def command
-      return @command if @command
-      browser_command
+      @command || browser_command
     end
 
     def browser_command(browser=@browser)
@@ -62,7 +62,7 @@ class Bcat
     end
 
     def shell_quote(argument)
-      arg = argument.to_s.gsub(/([\\'])/) { "\\" + $1 }
+      '"' + argument.to_s.gsub(/([\\"`$])/) { "\\" + $1 } + '"'
     end
   end
 end
