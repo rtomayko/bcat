@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name = 'bcat'
-  s.version = '0.5.2'
-  s.date = '2010-08-23'
+  s.version = '0.6.0'
+  s.date = '2011-02-21'
 
   s.description = "pipe to browser utility"
   s.summary =
@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
     COPYING
     INSTALLING
     README
+    RELEASING
     Rakefile
     bcat.gemspec
     bin/a2h
