@@ -1,5 +1,13 @@
-Report bcat bugs and patches to the issue tracker:
+Please submit pull requests to:
 
-<http://github.com/rtomayko/bcat/issues>
+<https://github.com/rtomayko/bcat/pulls>
 
-Unified diff patches and links to forks are appreciated.
+For information on forking repositories and sending pull requests:
+
+<http://help.github.com/pull-requests/>
+
+If you prefer sending text patches, please use git-format-patch(1) to generate
+them so I can attribute you properly. Text patches can be submitted to the issue
+tracker:
+
+<https://github.com/rtomayko/bcat/issues>
