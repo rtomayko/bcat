@@ -1,0 +1,10 @@
+RELEASING
+
+1. Change Bcat::VERSION in lib/bcat.rb
+2. rake bcat.gemspec
+3. rake package
+4. git add lib/bcat.rb bcat.gemspec
+5. git commit -m "0.5.3 release"
+6. git tag v0.5.3
+7. git push origin master v0.5.3
+8. gem push bcat-0.5.3.gem
