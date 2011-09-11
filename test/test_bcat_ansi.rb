@@ -118,4 +118,10 @@ class ANSITest < Test::Unit::TestCase
     expect = "oops forgot the 'm'"
     assert_equal expect, Bcat::ANSI.new(text).to_html
   end
+
+  test "xterm-256" do
+    text = "\x1b[38;5;196mhello"
+    expect = "<span style='color:#ff0000'>hello</span>"
+    assert_equal expect, Bcat::ANSI.new(text).to_html
+  end
 end

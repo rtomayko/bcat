@@ -112,6 +112,9 @@ class Bcat
             when 90..97   ; yield push_style("ef#{8 + code - 90}")
             when 100..107 ; yield push_style("eb#{8 + code - 100}")
             end 
+          when :xterm256
+            code = data
+            yield push_style("ef#{code}")
           end
         end
       end
@@ -143,6 +146,8 @@ class Bcat
         # characters to remove completely
         [/\A\x08+/, lambda { |m| '' }],
 
+        [/\A\x1b\[38;5;(\d+)m/, lambda { |m| yield :xterm256, $1.to_i; '' } ],
+
         # ansi escape sequences that mess with the display
         [/\A\x1b\[((?:\d{1,3};?)+|)m/, lambda { |m|
           m = '0' if m.strip.empty?
@@ -159,8 +164,7 @@ class Bcat
 
       while (size = text.size) > 0
         tokens.each do |pattern, sub|
-          while text.sub!(pattern) { sub.call($1) }
-          end
+          break if text.sub!(pattern) { sub.call($1) }
         end
         break if text.size == size
       end
