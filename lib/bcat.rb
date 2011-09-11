@@ -6,7 +6,7 @@ require 'bcat/server'
 require 'bcat/browser'
 
 class Bcat
-  VERSION = '0.6.1'
+  VERSION = '0.6.2'
   include Rack::Utils
 
   attr_reader :format

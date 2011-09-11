@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name = 'bcat'
-  s.version = '0.6.1'
-  s.date = '2011-05-22'
+  s.version = '0.6.2'
+  s.date = '2011-09-10'
 
   s.description = "pipe to browser utility"
   s.summary =
