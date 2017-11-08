@@ -3,6 +3,9 @@ bcat
     git clone git://github.com/rtomayko/bcat.git
     gem install bcat
 
+NOTE: This repository is archived and no longer actively maintained by @rtomayko
+      as of 2017-11-08.
+
 bcat is a pipe to browser utility for use at the shell and within editors like
 Vim or Emacs. It reads from standard input, or one or more files, and streams
 output to a browser window:
